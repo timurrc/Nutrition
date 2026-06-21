@@ -1,3 +1,7 @@
+import { ProgressRing } from "../components/features/ProgressRing";
+import { Card } from "../components/ui/Card";
+import { Container } from "../components/ui/Container";
+
 export const Dashboard = () => {
-  return <div></div>;
+  return <Container></Container>;
 };
