@@ -19,7 +19,7 @@ export const navLinks: iNavLinks[] = [
     id: 2,
     icon: CirclePlus,
     title: "Добавить",
-    link: "/create",
+    link: "/meal",
   },
   {
     id: 3,

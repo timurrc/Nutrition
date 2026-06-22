@@ -10,6 +10,7 @@ import oatmeal from "../assets/dishes/oatmeal.png";
 export const Log = () => {
   return (
     <Container>
+      <h2 className="text-xl mb-4">Дневник</h2>
       <div className="flex justify-between w-full bg-[#161B22] rounded-lg px-4 py-3 mb-4">
         <ChevronLeft />
         <h2 className="text-xl">Сегодня</h2>
@@ -53,7 +54,7 @@ export const Log = () => {
     //   <div className="flex justify-between gap-2 px-4">
     //     <div className="flex flex-col items-center">
     //       <p>Каллории</p>
-    //       <p>330/ 1900</p>
+    // <p>330/ 1900</p>
     //     </div>
     //     <div className="flex flex-col items-center">
     //       <p>Каллории</p>

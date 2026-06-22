@@ -7,7 +7,7 @@ interface ICard {
   children?: React.ReactNode;
   className?: string;
   //   variant: cardVariant;
-  //   onClick: () => void;
+  onClick?: () => void;
   //   title: string;
   //   description: string;
   //   protein: string;
@@ -19,8 +19,8 @@ interface ICard {
 export const Card: FC<ICard> = ({
   children,
   className,
+  onClick,
   //   variant,
-  //   onClick,
   //   title,
   //   description,
   //   protein,
@@ -74,6 +74,8 @@ export const Card: FC<ICard> = ({
   //   };
   return (
     // <div className="rounded-2xl w-full flex flex-col gap-0 px-3 py-3 bg-[#161B22] items-center">
-    <div className={`${className}`}>{children}</div>
+    <div className={`${className}`} onClick={onClick}>
+      {children}
+    </div>
   );
 };
