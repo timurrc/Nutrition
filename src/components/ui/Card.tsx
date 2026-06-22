@@ -5,7 +5,7 @@ import { FC } from "react";
 
 interface ICard {
   children?: React.ReactNode;
-  classname?: string;
+  className?: string;
   //   variant: cardVariant;
   //   onClick: () => void;
   //   title: string;
@@ -18,7 +18,7 @@ interface ICard {
 
 export const Card: FC<ICard> = ({
   children,
-  classname,
+  className,
   //   variant,
   //   onClick,
   //   title,
@@ -74,6 +74,6 @@ export const Card: FC<ICard> = ({
   //   };
   return (
     // <div className="rounded-2xl w-full flex flex-col gap-0 px-3 py-3 bg-[#161B22] items-center">
-    <div className={`${classname}`}>{children}</div>
+    <div className={`${className}`}>{children}</div>
   );
 };

@@ -14,7 +14,7 @@ export const Dashboard = () => {
       </div>
       <div className="flex justify-between gap-2 mt-5">
         <Card
-          classname={
+          className={
             "flex flex-col rounded-xl bg-[#161B22] gap-1 w-full items-center py-4"
           }
         >
@@ -27,7 +27,7 @@ export const Dashboard = () => {
           ></ProgressRing>
         </Card>
         <Card
-          classname={
+          className={
             "flex flex-col rounded-xl bg-[#161B22] gap-1 w-full items-center py-4"
           }
         >
@@ -40,7 +40,7 @@ export const Dashboard = () => {
           ></ProgressRing>
         </Card>
         <Card
-          classname={
+          className={
             "flex flex-col rounded-xl bg-[#161B22] gap-1 w-full items-center py-4 px-2"
           }
         >
@@ -54,7 +54,7 @@ export const Dashboard = () => {
         </Card>
       </div>
       <div>
-        <Card classname="flex justify-between w-full items-center bg-[#161B22] mt-5 rounded-xl py-4 px-4">
+        <Card className="flex justify-between w-full items-center bg-[#161B22] mt-5 rounded-xl py-4 px-4">
           <div className="flex flex-col gap-2 items-start">
             <b>Вода</b>
             <div className="flex items-center">
