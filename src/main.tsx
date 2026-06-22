@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Dashboard } from "./screens/Dashboard";
-import { Navbar } from "./components/layout/Navbar";
+import { Navbar } from "./components/layout/NavBar";
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>

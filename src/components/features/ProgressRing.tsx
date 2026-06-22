@@ -18,16 +18,16 @@ const COLOR_MAP: Record<ProgressRingColor, string> = {
 };
 
 const SIZE_MAP: Record<ProgressRingVariant, number> = {
-  big: 140,
+  big: 250,
   normal: 80,
 };
 const STROKE_MAP: Record<ProgressRingVariant, number> = {
-  big: 14,
-  normal: 80,
+  big: 11,
+  normal: 8,
 };
 export const ProgressRing: FC<IProgressRing> = ({
-  size = 60,
-  strokeWidth = 6,
+  size,
+  strokeWidth,
   progress,
   color,
   variant,
@@ -53,8 +53,8 @@ export const ProgressRing: FC<IProgressRing> = ({
           cx={center}
           cy={center}
           r={radius}
-          stroke="#e6e6e6"
-          strokeWidth={strokeWidth}
+          stroke="#232A35"
+          strokeWidth={currentStrokeWidth}
           fill="none"
         />
 
@@ -78,12 +78,22 @@ export const ProgressRing: FC<IProgressRing> = ({
           position: "absolute",
           top: "50%",
           left: "50%",
-          fontSize: "12px",
+
           color: "#f4f7f7",
           transform: "translate(-50%, -50%)",
         }}
       >
-        {progress}%
+        {variant === "normal" ? (
+          <>{progress}%</>
+        ) : (
+          <div className="flex flex-col items-center">
+            <p className="text-gray-400 ">Съедено</p>
+            <h1 className="text-4xl font-semibold ">1650</h1>
+            <p className="text-gray-400 mb-1">/ 1950 ккал</p>
+            <p className="text-gray-400">Осталось</p>
+            <p className="text-[#2ecc71]">400</p>
+          </div>
+        )}
       </div>
     </div>
   );

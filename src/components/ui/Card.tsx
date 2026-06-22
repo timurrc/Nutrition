@@ -5,7 +5,7 @@ import { FC } from "react";
 
 interface ICard {
   children?: React.ReactNode;
-  classname: string;
+  classname?: string;
   //   variant: cardVariant;
   //   onClick: () => void;
   //   title: string;
