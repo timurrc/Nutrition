@@ -1,6 +1,40 @@
 @import "tailwindcss";
+* {
+  box-sizing: border-box;
+}
 
 body {
   background: #0d1117;
   color: #fff;
+}
+
+/* Стили для контейнера вынесены отдельно, чтобы избежать конфликтов v4 */
+html,
+body,
+#root,
+#__next {
+  scrollbar-width: none; /* Для Firefox Mobile */
+  -ms-overflow-style: none; /* Для старых Windows/Edge устройств */
+
+  /* Плавный мобильный скролл (критично для iOS) */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 2. Скрытие для всех WebKit-браузеров (Safari на iOS, Chrome на Android) */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+#root::-webkit-scrollbar,
+.scroll-container::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important; /* Убирает возможные фантомные треки */
+}
+
+/* 3. Если у вас используется отдельный блок со скроллом внутри PWA */
+.scroll-container {
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
 }
