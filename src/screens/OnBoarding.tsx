@@ -14,12 +14,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Card } from "../components/ui/Card";
+import { OnBoardingRepository } from "../repositories/onBoardingRepository";
 
 interface IOnBoarding {
   sex: Sex | null;
-  height: string;
-  weight: string;
-  age: string;
+  height: number | null;
+  weight: number | null;
+  age: number | null;
   target: Target | null;
   activity: Activity | null;
 }
@@ -90,9 +91,9 @@ export const OnBoarding = () => {
   ];
   const [formData, setFormData] = useState<IOnBoarding>({
     sex: null,
-    height: "",
-    weight: "",
-    age: "",
+    height: null,
+    weight: null,
+    age: null,
     target: null,
     activity: null,
   });
@@ -100,12 +101,40 @@ export const OnBoarding = () => {
     const isCompleted = formData.sex && formData.height && formData.age;
     if (isCompleted) {
       setStep(step);
+      setIsError(false);
     } else {
       setIsError(true);
     }
   };
-  const handleFinishRegister = () => {
-    navigate("/home");
+  const handleFinishRegister = async () => {
+    const isCompleted =
+      formData.sex &&
+      formData.height &&
+      formData.age &&
+      formData.activity &&
+      formData.target &&
+      formData.weight;
+    if (!isCompleted) {
+      setIsError(true);
+      return;
+    }
+    try {
+      const currentUserId = Number(localStorage.getItem("currentUserId"));
+      const onBoardingId = await OnBoardingRepository.create({
+        userId: currentUserId,
+        sex: formData.sex!,
+        height: Number(formData.height),
+        weight: Number(formData.weight),
+        age: Number(formData.age),
+        target: formData.target!,
+        activity: formData.activity!,
+      });
+      if (onBoardingId) {
+        navigate("/home");
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
   return (
     <Container>

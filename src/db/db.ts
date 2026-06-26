@@ -2,7 +2,13 @@ import Dexie, { Table } from "dexie";
 
 export interface User {
   id?: number;
-  name: string;
+  email: string;
+  password: string;
+  date?: string;
+}
+export interface OnBoarding {
+  id?: number;
+  userId?: number;
   sex: string;
   height: number;
   weight: number;
@@ -10,16 +16,18 @@ export interface User {
   target: string;
   activity: string;
 }
-
 export class AppDatabase extends Dexie {
   users!: Table<User>;
+  onBoarding!: Table<OnBoarding>;
   //   meals!: Table<Meal>;
 
   constructor() {
     super("nutrition-db");
 
     this.version(1).stores({
-      users: "++id",
+      users: "++id, email",
+      onBoarding: "++id",
+
       //   meals: "++id,date",
     });
   }

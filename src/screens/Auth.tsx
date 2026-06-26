@@ -3,6 +3,8 @@ import logo from "/nutrition.png";
 import { Mail, Lock, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { db } from "../db/db";
+import { UserRepository } from "../repositories/userRepository";
 
 interface IAuth {
   email: string;
@@ -21,7 +23,43 @@ export const Auth = () => {
     confirmPassword: "",
     date: "",
   });
+  const handleRegister = async () => {
+    if (formData.password !== formData.confirmPassword) {
+      alert("Пароли не совпадают");
+    }
+    try {
+      const isExist = await UserRepository.findByEmail(formData.email);
+      if (isExist) {
+        alert("У вас уже есть аккаунт");
+      }
 
+      const userId = await UserRepository.create({
+        email: formData.email,
+        password: formData.password,
+        date: formData.date,
+      });
+      if (userId) {
+        localStorage.setItem("currentUserId", String(userId));
+        navigate("/onBoarding");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const handleAuth = async () => {
+    try {
+      const user = await UserRepository.findByEmail(formData.email);
+      if (
+        user?.email &&
+        user.password === formData.email &&
+        formData.password
+      ) {
+        navigate("/home");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <Container>
       <div className="flex flex-col justify-center items-center gap-8 mt-20">
@@ -101,9 +139,13 @@ export const Auth = () => {
         <div className="flex flex-col gap-3 w-full items-center">
           <button
             className="py-4 bg-[#7FE35B] text-black w-full rounded-xl font-semibold"
-            onClick={() =>
-              signUp ? navigate("/onBoarding") : navigate("/home")
-            }
+            onClick={() => {
+              if (signUp) {
+                handleRegister();
+              } else {
+                handleAuth();
+              }
+            }}
           >
             {signUp ? "Зарегистрироваться" : "Войти"}
           </button>
