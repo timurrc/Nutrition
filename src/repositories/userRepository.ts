@@ -7,14 +7,14 @@ export const UserRepository = {
   async findByEmail(email: string) {
     return db.users.where("email").equalsIgnoreCase(email).first();
   },
-  get(id: number) {
+  get(id: string) {
     return db.users.get(id);
   },
-  update(id: number, user: Partial<User>) {
+  update(id: string, user: Partial<User>) {
     return db.users.update(id, user);
   },
 
-  delete(id: number) {
+  delete(id: string) {
     return db.users.delete(id);
   },
 };

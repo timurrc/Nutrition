@@ -1,13 +1,13 @@
 import Dexie, { Table } from "dexie";
 
 export interface User {
-  id?: number;
+  id?: string;
   email: string;
   password: string;
   date?: string;
 }
 export interface OnBoarding {
-  id?: number;
+  id?: string;
   userId?: number;
   sex: string;
   height: number;
@@ -16,9 +16,16 @@ export interface OnBoarding {
   target: string;
   activity: string;
 }
+export interface WaterEntry {
+  id?: string;
+  userId: number;
+  amount: number;
+  createdAt: Date;
+}
 export class AppDatabase extends Dexie {
   users!: Table<User>;
   onBoarding!: Table<OnBoarding>;
+  waterEntry!: Table<WaterEntry>;
   //   meals!: Table<Meal>;
 
   constructor() {
@@ -26,8 +33,8 @@ export class AppDatabase extends Dexie {
 
     this.version(1).stores({
       users: "++id, email",
-      onBoarding: "++id",
-
+      onBoarding: "++id, userId",
+      waterEntry: "++id",
       //   meals: "++id,date",
     });
   }
