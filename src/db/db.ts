@@ -20,7 +20,8 @@ export interface WaterEntry {
   id?: string;
   userId: number;
   amount: number;
-  createdAt: Date;
+  description: string | null;
+  createdAt: number;
 }
 export class AppDatabase extends Dexie {
   users!: Table<User>;
