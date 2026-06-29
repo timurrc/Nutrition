@@ -5,14 +5,15 @@ export const MealRepository = {
     return db.meals.add(meal);
   },
 
-  getToday(id: number) {
-    const start = new Date();
-    const end = new Date();
+  getByDate(userId: number, date: Date) {
+    const start = new Date(date);
+    const end = new Date(date);
     start.setHours(0, 0, 0, 0);
     end.setHours(23, 59, 59, 999);
     return db.meals
       .where("createdAt")
-      .between(start, end)
-      .filter((meal) => meal.userId === id).toArray;
+      .between(start.getTime(), end.getTime())
+      .filter((meal) => meal.userId === userId)
+      .toArray();
   },
 };

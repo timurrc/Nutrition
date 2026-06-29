@@ -7,68 +7,117 @@ import {
   Plus,
 } from "lucide-react";
 import oatmeal from "../assets/dishes/oatmeal.png";
+import { useEffect, useState } from "react";
+import { MealRepository } from "../repositories/mealRepository";
+import { MealEntry } from "../db/db";
+import { useNavigate } from "react-router-dom";
+import { MealSection } from "../components/ui/MealSection";
+type GroupedMeals = {
+  breakfast: {
+    items: MealEntry[];
+    calories: number;
+  };
+  lunch: {
+    items: MealEntry[];
+    calories: number;
+  };
+  dinner: {
+    items: MealEntry[];
+    calories: number;
+  };
+  snack: {
+    items: MealEntry[];
+    calories: number;
+  };
+};
+
 export const Log = () => {
+  const [meals, setMeals] = useState<MealEntry[]>([]);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const navigate = useNavigate();
+  const groupedMeals = meals.reduce<GroupedMeals>(
+    (acc, meal) => {
+      acc[meal.mealType].items.push(meal);
+
+      acc[meal.mealType].calories += meal.calories;
+
+      return acc;
+    },
+    {
+      breakfast: {
+        items: [],
+        calories: 0,
+      },
+
+      lunch: {
+        items: [],
+        calories: 0,
+      },
+
+      dinner: {
+        items: [],
+        calories: 0,
+      },
+
+      snack: {
+        items: [],
+        calories: 0,
+      },
+    },
+  );
+
+  const handleFetchMeals = async () => {
+    const response = await MealRepository.getByDate(1, selectedDate);
+    setMeals(response);
+  };
+
   return (
     <Container>
       <h2 className="text-xl mb-4">Дневник</h2>
       <div className="flex justify-between w-full bg-[#161B22] rounded-lg px-4 py-3 mb-4">
-        <ChevronLeft />
+        <ChevronLeft
+          onClick={() =>
+            setSelectedDate((prev) => {
+              const next = new Date(prev);
+              next.setDate(next.getDate() - 1);
+              return next;
+            })
+          }
+        />
         <h2 className="text-xl">Сегодня</h2>
-        <ChevronRight />
+        <ChevronRight
+          onClick={() =>
+            setSelectedDate((prev) => {
+              const next = new Date(prev);
+              next.setDate(next.getDate() + 1);
+              return next;
+            })
+          }
+        />
       </div>
 
-      <Card className="bg-[#161B22] rounded-xl px-4 py-3">
-        <div className="w-full flex justify-between mb-4">
-          <b>Завтрак</b>
-          <p className="text-gray-500">450 ккал</p>
-        </div>
-        <div className="flex flex-col gap-2 mb-4">
-          <div className="w-full flex justify-between items-center">
-            <div className="flex gap-2 items-center">
-              <img src={oatmeal} width={54} height={54} alt="" />
-              <div className="flex flex-col">
-                <p>Овсянка</p>
-                <p>100г· 165 ккал</p>
-              </div>
-            </div>
-            <EllipsisVertical />
-          </div>
-          <div className="w-full flex justify-between items-center">
-            <div className="flex gap-2 items-center">
-              <img src={oatmeal} width={54} height={54} alt="" />
-              <div className="flex flex-col">
-                <p>Овсянка</p>
-                <p>100г· 165 ккал</p>
-              </div>
-            </div>
-            <EllipsisVertical />
-          </div>
-        </div>
-        <div className="flex items-center">
-          <Plus />
-          <p>Добавить продукт</p>
-        </div>
-      </Card>
+      <div className="flex flex-col gap-2">
+        <MealSection
+          MealTitle={"Завтрак"}
+          meals={groupedMeals.breakfast.items}
+          onAddMeal={() => navigate("/add-meal")}
+        />
+        <MealSection
+          MealTitle={"Обед"}
+          meals={groupedMeals.lunch.items}
+          onAddMeal={() => navigate("/add-meal")}
+        />
+        <MealSection
+          MealTitle={"Ужин"}
+          meals={groupedMeals.dinner.items}
+          onAddMeal={() => navigate("/add-meal")}
+        />
+        <MealSection
+          MealTitle={"Снеки"}
+          meals={groupedMeals.snack.items}
+          onAddMeal={() => navigate("/add-meal")}
+        />
+      </div>
     </Container>
-    // <div className="fixed bottom-30 bg-[#161B22] w-full rounded-2xl">
-    //   <div className="flex justify-between gap-2 px-4">
-    //     <div className="flex flex-col items-center">
-    //       <p>Каллории</p>
-    // <p>330/ 1900</p>
-    //     </div>
-    //     <div className="flex flex-col items-center">
-    //       <p>Каллории</p>
-    //       <p>330/ 1900</p>
-    //     </div>
-    //     <div className="flex flex-col items-center">
-    //       <p>Каллории</p>
-    //       <p>330/ 1900</p>
-    //     </div>
-    //     <div className="flex flex-col items-center">
-    //       <p>Каллории</p>
-    //       <p>330/ 1900</p>
-    //     </div>
-    //   </div>
-    // </div>
   );
 };

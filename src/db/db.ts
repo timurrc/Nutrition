@@ -34,7 +34,6 @@ export interface MealEntry {
   fat: number;
   carbs: number;
   per: number;
-
   mealType: MealType;
   createdAt: number;
 }
@@ -52,8 +51,8 @@ export class AppDatabase extends Dexie {
     this.version(1).stores({
       users: "++id, email",
       onBoarding: "++id, userId",
-      waterEntry: "++id, userId",
-      meals: "++id,date",
+      waterEntry: "++id, userId, createdAt",
+      meals: "++id, userId,createdAt",
     });
   }
 }
