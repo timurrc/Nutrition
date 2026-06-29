@@ -1,14 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "../components/ui/Card";
 import { Container } from "../components/ui/Container";
 import { Food, foods } from "../consts/dishes";
 import { Plus, Search, Star } from "lucide-react";
+import { MealRepository } from "../repositories/mealRepository";
+import { MealType } from "../db/db";
 
 export const Meal = () => {
   const [pickedId, setPickedId] = useState<number | null>(null);
   const [full, setFull] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>("");
+
   const selectedFood = foods.find((item) => item.id === pickedId);
-  const visibleFoods = full ? foods : foods.slice(0, 3);
+  const filtered = foods.filter((item) =>
+    item.title.toLowerCase().includes(search.toLowerCase()),
+  );
+  const visibleFoods = full ? filtered : filtered.slice(0, 3);
+
+  const [select, setSelect] = useState<MealType>("breakfast");
+
+  const handleUpdateMeal = () => {
+    if (selectedFood) {
+      MealRepository.create({
+        userId: 1,
+        image: selectedFood?.image,
+        title: selectedFood?.title,
+        calories: selectedFood?.calories,
+        protein: selectedFood?.protein,
+        fat: selectedFood?.fat,
+        carbs: selectedFood?.carbs,
+        per: 100,
+        mealType: select,
+        createdAt: Date.now(),
+      });
+    } else {
+      return;
+    }
+  };
   return (
     <Container>
       <h2 className="text-xl mb-4">Добавьте прием пищи</h2>
@@ -18,6 +46,8 @@ export const Meal = () => {
           type="text"
           placeholder="Поиск продуктов"
           className="w-full ml-7 outline-none"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
       </div>
       <div className="flex flex-col gap-2 mb-4">
@@ -74,7 +104,7 @@ export const Meal = () => {
                 </div>
               </div>
             </div>
-            <Star className="text-gray-300 w-14" />
+            {/* <Star className="text-gray-300 w-14" /> */}
           </div>
           <div className="flex justify-between items-center gap-2">
             <div className="flex flex-col text-center">
@@ -93,7 +123,21 @@ export const Meal = () => {
               <p className="text-[#2ecc71]">{selectedFood.calories} ккал</p>
             </div>
           </div>
-          <button className="bg-[#7FE35B] text-black text-center py-4 rounded-xl ">
+          <select
+            name="mealType"
+            id="mealTypeList"
+            onChange={(e) => setSelect(e.target.value as MealType)}
+            className="w-full min-w-full bg-[#1C2128] px-4 py-4 rounded-xl outline-none border border-[#2A313C]"
+          >
+            <option value="breakfast">Завтрак</option>
+            <option value="lunch">Обед</option>
+            <option value="dinner">Ужин</option>
+            <option value="snack">Перекус</option>
+          </select>
+          <button
+            className="bg-[#7FE35B] text-black text-center py-4 rounded-xl"
+            onClick={() => handleUpdateMeal()}
+          >
             Добавить в дневник
           </button>
         </Card>
