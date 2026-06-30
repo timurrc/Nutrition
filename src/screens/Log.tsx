@@ -34,6 +34,9 @@ type GroupedMeals = {
 export const Log = () => {
   const [meals, setMeals] = useState<MealEntry[]>([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const today = new Date();
+
+  const isToday = selectedDate.toDateString() === today.toDateString();
   const navigate = useNavigate();
   const groupedMeals = meals.reduce<GroupedMeals>(
     (acc, meal) => {
@@ -66,10 +69,14 @@ export const Log = () => {
     },
   );
 
-  const handleFetchMeals = async () => {
-    const response = await MealRepository.getByDate(1, selectedDate);
-    setMeals(response);
-  };
+  useEffect(() => {
+    const fetchMeals = async () => {
+      const response = await MealRepository.getByDate(1, selectedDate);
+      setMeals(response);
+    };
+
+    fetchMeals();
+  }, [selectedDate]);
 
   return (
     <Container>
@@ -84,7 +91,14 @@ export const Log = () => {
             })
           }
         />
-        <h2 className="text-xl">Сегодня</h2>
+        <h2 className="text-xl text-semibold">
+          {isToday
+            ? "Сегодня"
+            : selectedDate.toLocaleDateString("ru-RU", {
+                day: "numeric",
+                month: "long",
+              })}
+        </h2>
         <ChevronRight
           onClick={() =>
             setSelectedDate((prev) => {
