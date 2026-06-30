@@ -11,10 +11,10 @@ import { OnBoarding } from "./screens/OnBoarding";
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Auth />} />
-      <Route path="/onBoarding" element={<OnBoarding />} />
+      {/* <Route path="/" element={<Auth />} /> */}
+      {/* <Route path="/onBoarding" element={<OnBoarding />} /> */}
       <Route element={<Navbar />}>
-        <Route path="/home" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="/meal" element={<Meal />} />
         <Route path="/log" element={<Log />} />
       </Route>

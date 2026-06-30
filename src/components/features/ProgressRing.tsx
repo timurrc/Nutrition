@@ -53,7 +53,7 @@ export const ProgressRing: FC<IProgressRing> = ({
           cx={center}
           cy={center}
           r={radius}
-          stroke="#232A35"
+          stroke="#eef2ef"
           strokeWidth={currentStrokeWidth}
           fill="none"
         />
@@ -84,11 +84,11 @@ export const ProgressRing: FC<IProgressRing> = ({
         }}
       >
         {variant === "normal" ? (
-          <>{progress}%</>
+          <p className="text-text">{progress}%</p>
         ) : (
           <div className="flex flex-col items-center">
-            <p className="text-gray-400 ">Съедено</p>
-            <h1 className="text-4xl font-semibold ">1650</h1>
+            <p className="text-text ">Съедено</p>
+            <h1 className="text-4xl text-text font-semibold ">1650</h1>
             <p className="text-gray-400 mb-1">/ 1950 ккал</p>
             <p className="text-gray-400">Осталось</p>
             <p className="text-[#2ecc71]">400</p>

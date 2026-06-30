@@ -1,17 +1,13 @@
 import { Card } from "../components/ui/Card";
 import { Container } from "../components/ui/Container";
-import {
-  ChevronLeft,
-  ChevronRight,
-  EllipsisVertical,
-  Plus,
-} from "lucide-react";
-import oatmeal from "../assets/dishes/oatmeal.png";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
 import { useEffect, useState } from "react";
 import { MealRepository } from "../repositories/mealRepository";
 import { MealEntry } from "../db/db";
 import { useNavigate } from "react-router-dom";
 import { MealSection } from "../components/ui/MealSection";
+import { Typography } from "../components/ui/Typography";
 type GroupedMeals = {
   breakfast: {
     items: MealEntry[];
@@ -80,8 +76,11 @@ export const Log = () => {
 
   return (
     <Container>
-      <h2 className="text-xl mb-4">Дневник</h2>
-      <div className="flex justify-between w-full bg-[#161B22] rounded-lg px-4 py-3 mb-4">
+      <Typography variant={"h2"} className="mb-4">
+        Дневник
+      </Typography>
+
+      <div className="flex justify-between w-full bg-surface rounded-lg px-4 py-3 mb-4">
         <ChevronLeft
           onClick={() =>
             setSelectedDate((prev) => {
@@ -91,14 +90,15 @@ export const Log = () => {
             })
           }
         />
-        <h2 className="text-xl text-semibold">
+        <Typography variant={"h2"}>
           {isToday
             ? "Сегодня"
             : selectedDate.toLocaleDateString("ru-RU", {
                 day: "numeric",
                 month: "long",
               })}
-        </h2>
+        </Typography>
+
         <ChevronRight
           onClick={() =>
             setSelectedDate((prev) => {

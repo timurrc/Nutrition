@@ -1,8 +1,9 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Card } from "./Card";
 import { EllipsisVertical, Plus } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+
 import { MealEntry } from "../../db/db";
+import { Typography } from "./Typography";
 
 interface MealSectionProps {
   MealTitle: string;
@@ -19,10 +20,12 @@ export const MealSection: FC<MealSectionProps> = ({
     return sum + meal.calories;
   }, 0);
   return (
-    <Card className="bg-[#161B22] rounded-xl px-4 py-3">
+    <Card className="bg-surface rounded-xl px-4 py-3">
       <div className="w-full flex justify-between mb-4">
-        <b>{MealTitle}</b>
-        <p className="text-gray-500">{calories} ккал</p>
+        <Typography variant={"body"} className="text-semibold">
+          {MealTitle}
+        </Typography>
+        <Typography variant={"body"}>{calories} ккал</Typography>
       </div>
       <div className="flex flex-col gap-2 mb-4">
         {meals.map((item) => (
@@ -33,10 +36,10 @@ export const MealSection: FC<MealSectionProps> = ({
             <div className="flex gap-2 items-center">
               <img src={item.image} width={54} height={54} alt="" />
               <div className="flex flex-col">
-                <p>{item.title}</p>
-                <p>
+                <Typography variant={"body"}>{item.title}</Typography>
+                <Typography variant={"body"}>
                   {item.per}г · {item.calories} ккал
-                </p>
+                </Typography>
               </div>
             </div>
             <EllipsisVertical />
@@ -45,7 +48,7 @@ export const MealSection: FC<MealSectionProps> = ({
       </div>
       <div className="flex items-center" onClick={() => onAddMeal()}>
         <Plus />
-        <p>Добавить продукт</p>
+        <Typography variant={"body"}>Добавить продукт</Typography>
       </div>
     </Card>
   );

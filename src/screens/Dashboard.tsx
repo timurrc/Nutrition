@@ -15,6 +15,7 @@ import { useState } from "react";
 import { WaterRepository } from "../repositories/waterRepository";
 import { Typography } from "../components/ui/Typography";
 import { Input } from "../components/ui/Input";
+import { Button } from "../components/ui/Button";
 
 interface IWaterVolume {
   id: number;
@@ -146,8 +147,8 @@ export const Dashboard = () => {
         </Card>
       </div>
       {isOpen && (
-        <div className="flex justify-center  ">
-          <div className="fixed top-10 bg-[#1C2128] border border-[#2A313C] rounded-xl h-150 w-92 flex flex-col gap-4 px-4 py-5 ">
+        <div className="flex justify-center">
+          <div className="fixed top-20 bg-surface border border-border rounded-xl h-150 w-92 flex flex-col gap-4 px-4 py-5 ">
             <Typography variant={"h2"}>Добавить воду</Typography>
 
             <div className="flex flex-col gap-4">
@@ -155,7 +156,7 @@ export const Dashboard = () => {
 
               <div className="flex justify-between items-center w-full">
                 <div
-                  className="p-4 bg-[#2A313C] rounded-full"
+                  className="p-4 bg-surface-secondary rounded-full"
                   onClick={() => handleChangeVolume("decrement")}
                 >
                   <Minus />
@@ -163,7 +164,7 @@ export const Dashboard = () => {
                 <Typography variant={"h1"}> {formData.addWater} мл</Typography>
 
                 <div
-                  className="p-4 bg-[#2A313C] rounded-full"
+                  className="p-4 bg-surface-secondary rounded-full"
                   onClick={() => handleChangeVolume("increment")}
                 >
                   <Plus />
@@ -178,7 +179,7 @@ export const Dashboard = () => {
                   const IconComponent = item.icon;
                   return (
                     <Card
-                      className={`flex items-center gap-2 bg-[#2A313C]  px-4 py-3 rounded-xl ${formData.addWater === item.title ? "border border-[#60A5FA]" : "border border-[#2A313C]"}`}
+                      className={`flex items-center gap-2 bg-surface-secondary  px-4 py-3 rounded-xl ${formData.addWater === item.title ? "border border-[#60A5FA]" : "border border-border"}`}
                       onClick={() => handleSelectVolume(item.title)}
                       key={item.id}
                     >
@@ -203,13 +204,10 @@ export const Dashboard = () => {
                 placeholder="Например: после тренировки"
               />
             </div>
-
-            <button
-              className="py-4 bg-[#60A5FA] text-black w-full rounded-xl font-semibold"
-              onClick={() => handleUpdateWater()}
-            >
+            <Button variant="secondary" onClick={() => handleUpdateWater()}>
               Добавить {formData.addWater} мл воды
-            </button>
+            </Button>
+
             <div className="text-gray-500 flex items-center gap-2 justify-center">
               <Droplet />
               <Typography variant={"body"}>Цель на сегодня 2 500мл</Typography>

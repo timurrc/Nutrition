@@ -6,7 +6,7 @@ interface IButton {
 
   onClick: () => void;
   disabled?: boolean;
-  variant: "primary" | "disabled";
+  variant: "primary" | "secondary" | "disabled";
 }
 
 export const Button: FC<IButton> = ({
@@ -19,6 +19,8 @@ export const Button: FC<IButton> = ({
   const variants = {
     primary:
       "py-4 bg-primary active:bg-primary-hover active:transition-all text-text-button w-full rounded-xl font-semibold",
+    secondary:
+      "py-4 bg-[#60A5FA] active:bg-primary-hover active:transition-all text-background w-full rounded-xl font-semibold",
     disabled: "py-4 bg-disabled text-black w-full rounded-xl font-semibold",
   };
 

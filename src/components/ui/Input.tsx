@@ -40,7 +40,7 @@ export const Input: FC<IInput> = ({
           <input
             placeholder={placeholder}
             type={type}
-            className={`${className} w-full bg-surface rounded-xl outline-none ${iconSide === "left" ? "px-14 py-4" : "pr-14 pl-4"}`}
+            className={`${className} w-full bg-surface rounded-xl  outline-none active:bg-surface ${iconSide === "left" ? "px-14 py-4" : "pr-14 pl-4 py-4"}`}
             onChange={onChange}
             value={value}
           />

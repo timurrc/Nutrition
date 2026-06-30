@@ -5,6 +5,8 @@ import { Food, foods } from "../consts/dishes";
 import { Plus, Search, Star } from "lucide-react";
 import { MealRepository } from "../repositories/mealRepository";
 import { MealType } from "../db/db";
+import { Typography } from "../components/ui/Typography";
+import { Button } from "../components/ui/Button";
 
 export const Meal = () => {
   const [pickedId, setPickedId] = useState<number | null>(null);
@@ -39,8 +41,11 @@ export const Meal = () => {
   };
   return (
     <Container>
-      <h2 className="text-xl mb-4">Добавьте прием пищи</h2>
-      <div className="mb-4 bg-[#1C2128] px-4 py-3 rounded-xl relative">
+      <Typography variant={"h2"} className="mb-4">
+        Добавьте прием пищи
+      </Typography>
+
+      <div className="mb-4 bg-surface px-4 py-3 rounded-xl relative">
         <Search className="w-8 absolute top-3 ml-2 left-0" />
         <input
           type="text"
@@ -52,20 +57,21 @@ export const Meal = () => {
       </div>
       <div className="flex flex-col gap-2 mb-4">
         <div className="flex justify-between">
-          <p>Популярные</p>
-          <p
+          <Typography variant={"body"}>Популярные</Typography>
+          <Typography
+            variant={"body"}
             onClick={() => {
               setFull(!full);
             }}
           >
             {full ? "Свернуть" : "Показать еще"}
-          </p>
+          </Typography>
         </div>
         {visibleFoods.map((item: Food) => (
           <div
             onClick={() => setPickedId(item.id)}
             key={item.id}
-            className={`px-2 py-3 w-full rounded-xl flex justify-between items-center ${pickedId === item.id ? "border-2 border-[#2A313C] bg-[#1C2128]" : "border-2 border-[#161B22] bg-[#161B22]"}`}
+            className={`px-2 py-3 w-full rounded-xl flex justify-between items-center ${pickedId === item.id ? "border-2 border-border-secondary bg-surface-secondary" : "border-2 border-border bg-surface"}`}
           >
             <div className="flex gap-4 items-center">
               <img
@@ -75,10 +81,11 @@ export const Meal = () => {
                 loading="lazy"
               />
               <div className="flex flex-col items-start">
-                <p>{item.title}</p>
+                <Typography variant={"body"}>{item.title}</Typography>
+
                 <div className="flex items-center gap-1">
-                  <p>{item.per}г ⋅</p>
-                  <p className="">{item.calories} ккал</p>
+                  <Typography variant={"body"}>{item.per}г ⋅</Typography>
+                  <Typography variant={"body"}>{item.calories} ккал</Typography>
                 </div>
               </div>
             </div>
@@ -87,7 +94,7 @@ export const Meal = () => {
         ))}
       </div>
       {selectedFood && (
-        <Card className="flex flex-col gap-6 bg-[#161B22] px-2 py-3 rounded-xl">
+        <Card className="flex flex-col gap-6 bg-surface px-2 py-3 rounded-xl">
           <div className="flex justify-between w-full items-center">
             <div className="flex gap-4 items-center">
               <img
@@ -97,49 +104,57 @@ export const Meal = () => {
                 loading="lazy"
               />
               <div className="flex flex-col items-start">
-                <p>{selectedFood.title}</p>
+                <Typography variant={"body"}>{selectedFood.title}</Typography>
+
                 <div className="flex items-center gap-1">
-                  <p>{selectedFood.per}г ⋅</p>
-                  <p className="">{selectedFood.calories} ккал</p>
+                  <Typography variant={"body"}>
+                    {selectedFood.per}г ⋅
+                  </Typography>
+                  <Typography variant={"body"}>
+                    {selectedFood.calories} ккал
+                  </Typography>
                 </div>
               </div>
             </div>
-            {/* <Star className="text-gray-300 w-14" /> */}
           </div>
           <div className="flex justify-between items-center gap-2">
             <div className="flex flex-col text-center">
-              <p>Белки</p>
-              <p className="text-[#67E8A5]">{selectedFood.protein}</p>
+              <Typography variant={"body"}>Белки</Typography>
+              <Typography variant={"body"}>{selectedFood.protein}</Typography>
             </div>
             <div className="flex flex-col text-center">
-              <p>Жиры</p> <p className="text-[#FFB84D]">{selectedFood.fat}</p>
+              <Typography variant={"body"}>Жиры</Typography>
+              <Typography variant={"body"} className="text-fat">
+                {selectedFood.protein}
+              </Typography>
             </div>
             <div className="flex flex-col text-center">
-              <p>Углеводы</p>
-              <p className="text-[#A78BFA]">{selectedFood.carbs}</p>
+              <Typography variant={"body"}>Углеводы</Typography>
+              <Typography variant={"body"} className="text-carbs">
+                {selectedFood.carbs}
+              </Typography>
             </div>
             <div className="flex flex-col text-center">
-              <p>Калории</p>
-              <p className="text-[#2ecc71]">{selectedFood.calories} ккал</p>
+              <Typography variant={"body"}>Калории</Typography>
+              <Typography variant={"body"} className="text-primary">
+                {selectedFood.calories}
+              </Typography>
             </div>
           </div>
           <select
             name="mealType"
             id="mealTypeList"
             onChange={(e) => setSelect(e.target.value as MealType)}
-            className="w-full min-w-full bg-[#1C2128] px-4 py-4 rounded-xl outline-none border border-[#2A313C]"
+            className="w-full min-w-full bg-surface px-4 py-4 rounded-xl outline-none border border-[#2A313C]"
           >
             <option value="breakfast">Завтрак</option>
             <option value="lunch">Обед</option>
             <option value="dinner">Ужин</option>
             <option value="snack">Перекус</option>
           </select>
-          <button
-            className="bg-[#7FE35B] text-black text-center py-4 rounded-xl"
-            onClick={() => handleUpdateMeal()}
-          >
+          <Button variant="primary" onClick={() => handleUpdateMeal()}>
             Добавить в дневник
-          </button>
+          </Button>
         </Card>
       )}
     </Container>
