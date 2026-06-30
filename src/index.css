@@ -16,11 +16,14 @@ body {
   --color-border: #e3e7e3;
 
   --color-text: #1f2937;
+  --color-text-button: #fff;
   --color-text-secondary: #6b7280;
   --color-placeholder: #9ca3af;
 
   --color-primary: #65c466;
   --color-primary-hover: #57b659;
+
+  --color-disabled: #d8e7d8;
 
   --color-protein: #4da6ff;
   --color-fat: #ffb84d;

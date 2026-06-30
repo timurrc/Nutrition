@@ -7,6 +7,7 @@ import { db } from "../db/db";
 import { UserRepository } from "../repositories/userRepository";
 import { Input } from "../components/ui/Input";
 import { Typography } from "../components/ui/Typography";
+import { Button } from "../components/ui/Button";
 
 interface IAuth {
   email: string;
@@ -126,8 +127,8 @@ export const Auth = () => {
           )}
         </div>
         <div className="flex flex-col gap-3 w-full items-center">
-          <button
-            className="py-4 bg-primary active:bg-primary-hover active:transition-all text-black w-full rounded-xl font-semibold"
+          <Button
+            variant="primary"
             onClick={() => {
               if (signUp) {
                 handleRegister();
@@ -137,7 +138,7 @@ export const Auth = () => {
             }}
           >
             {signUp ? "Зарегистрироваться" : "Войти"}
-          </button>
+          </Button>
 
           {signUp ? (
             <Typography
