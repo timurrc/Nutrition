@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { db } from "../db/db";
 import { UserRepository } from "../repositories/userRepository";
+import { Input } from "../components/ui/Input";
 
 interface IAuth {
   email: string;
@@ -72,64 +73,48 @@ export const Auth = () => {
           </p>
         </div>
         <div className="flex flex-col gap-2 w-full">
-          <div className="relative w-full">
-            <Mail className="absolute top-4 left-5 text-gray-500" />
-            <input
-              type="text"
-              className="w-full bg-[#1C2128] px-14 py-4 rounded-xl"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              placeholder="Email"
-            />
-          </div>
-          <div className="relative w-full">
-            <Lock className="absolute top-4 left-5 text-gray-500" />
-            <input
-              type="password"
-              className="w-full bg-[#1C2128] px-14 py-4 rounded-xl"
-              value={formData.password}
-              placeholder="Password"
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-            />
-          </div>
+          <Input
+            placeholder={"Email"}
+            type={"email"}
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
+            icon={Mail}
+            iconSide="left"
+          />
+          <Input
+            placeholder={"Password"}
+            type={"password"}
+            value={formData.password}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
+            icon={Lock}
+            iconSide="left"
+          />
+
           {signUp && (
             <>
-              <div className="relative w-full">
-                <Lock className="absolute top-4 left-5 text-gray-500" />
-                <input
-                  type="password"
-                  className="w-full bg-[#1C2128] px-14 py-4 rounded-xl"
-                  value={formData.confirmPassword}
-                  placeholder="Confirm password"
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      confirmPassword: e.target.value,
-                    })
-                  }
-                />
-              </div>
-              <div className="relative w-full overflow-hidden items-center">
-                <Calendar className="absolute top-5 left-5 text-gray-500" />
-                {formData.date?.length === null && (
-                  <p className="absolute top-4 left-14.5 text-gray-500">
-                    Enter the date
-                  </p>
-                )}
-                <input
-                  type="date"
-                  className="w-full bg-[#1C2128] py-4 text-left px-15 rounded-xl appearance-none"
-                  value={formData.date}
-                  placeholder=""
-                  onChange={(e) =>
-                    setFormData({ ...formData, date: e.target.value })
-                  }
-                />
-              </div>
+              <Input
+                placeholder={"Confirm password"}
+                type={"password"}
+                value={formData.confirmPassword ?? ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, confirmPassword: e.target.value })
+                }
+                icon={Lock}
+                iconSide="left"
+              />
+              <Input
+                type={"date"}
+                value={formData.date ?? ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, date: e.target.value })
+                }
+                icon={Calendar}
+                iconSide="left"
+              />
             </>
           )}
           {!signUp && (
