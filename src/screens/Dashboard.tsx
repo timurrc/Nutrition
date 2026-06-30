@@ -69,7 +69,7 @@ export const Dashboard = () => {
       <div className="flex justify-between gap-2 mt-5">
         <Card
           className={
-            "flex flex-col rounded-xl bg-[#161B22] gap-1 w-full items-center py-4"
+            "flex flex-col rounded-xl bg-surface gap-1 w-full items-center py-4"
           }
         >
           <b>Белки</b>
@@ -82,7 +82,7 @@ export const Dashboard = () => {
         </Card>
         <Card
           className={
-            "flex flex-col rounded-xl bg-[#161B22] gap-1 w-full items-center py-4"
+            "flex flex-col rounded-xl bg-surface gap-1 w-full items-center py-4"
           }
         >
           <b>Жиры</b>
@@ -95,7 +95,7 @@ export const Dashboard = () => {
         </Card>
         <Card
           className={
-            "flex flex-col rounded-xl bg-[#161B22] gap-1 w-full items-center py-4 px-2"
+            "flex flex-col rounded-xl bg-surface gap-1 w-full items-center py-4 px-2"
           }
         >
           <b>Углеводы</b>
@@ -108,7 +108,7 @@ export const Dashboard = () => {
         </Card>
       </div>
       <div>
-        <Card className="flex justify-between w-full items-center bg-[#161B22] mt-5 rounded-xl py-4 px-4">
+        <Card className="flex justify-between w-full items-center bg-surface mt-5 rounded-xl py-4 px-4">
           <div className="flex flex-col gap-2 items-start">
             <b>Вода</b>
             <div className="flex items-center">
@@ -116,7 +116,7 @@ export const Dashboard = () => {
             </div>
           </div>
           <div
-            className="bg-[#1C2128] p-2 rounded-full"
+            className="bg-surface p-2 rounded-full"
             onClick={() => setIsOpen(!isOpen)}
           >
             <Plus />

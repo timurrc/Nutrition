@@ -4,10 +4,33 @@
 }
 
 body {
-  background: #0d1117;
-  color: #fff;
+  background: var(--color-background);
+  color: var(--color-text);
 }
 
+@theme {
+  --color-background: #f6f7f6;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #eef2ef;
+
+  --color-border: #e3e7e3;
+
+  --color-text: #1f2937;
+  --color-text-secondary: #6b7280;
+  --color-placeholder: #9ca3af;
+
+  --color-primary: #65c466;
+  --color-primary-hover: #57b659;
+
+  --color-protein: #4da6ff;
+  --color-fat: #ffb84d;
+  --color-carbs: #a78bfa;
+  --color-water: #3db8ff;
+
+  --color-success: #22c55e;
+  --color-warning: #f4b942;
+  --color-danger: #ef4444;
+}
 /* Стили для контейнера вынесены отдельно, чтобы избежать конфликтов v4 */
 html,
 body,
