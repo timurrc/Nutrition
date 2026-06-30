@@ -6,6 +6,7 @@ import { useState } from "react";
 import { db } from "../db/db";
 import { UserRepository } from "../repositories/userRepository";
 import { Input } from "../components/ui/Input";
+import { Typography } from "../components/ui/Typography";
 
 interface IAuth {
   email: string;
@@ -66,11 +67,12 @@ export const Auth = () => {
       <div className="flex flex-col justify-center items-center gap-8 mt-20">
         <img src={logo} className="w-36" alt="" />
         <div className="flex flex-col gap-2 text-center">
-          <h2 className="text-2xl font-semibold">Добро пожаловать!</h2>
-          <p className="text-gray-500">
+          <Typography variant={"h2"}>Добро пожаловать!</Typography>
+
+          <Typography variant={"body"} className="text-gray-500">
             {signUp ? "Создайте" : "Войдите в "} аккаунт, чтобы
             {signUp ? " начать" : "продолжить"} свой путь к цели
-          </p>
+          </Typography>
         </div>
         <div className="flex flex-col gap-2 w-full">
           <Input
@@ -118,12 +120,14 @@ export const Auth = () => {
             </>
           )}
           {!signUp && (
-            <p className="flex justify-end text-[#75d253]">Забыли пароль?</p>
+            <Typography variant={"body"} className="flex justify-end text-text">
+              Забыли пароль?
+            </Typography>
           )}
         </div>
         <div className="flex flex-col gap-3 w-full items-center">
           <button
-            className="py-4 bg-[#7FE35B] text-black w-full rounded-xl font-semibold"
+            className="py-4 bg-primary active:bg-primary-hover active:transition-all text-black w-full rounded-xl font-semibold"
             onClick={() => {
               if (signUp) {
                 handleRegister();
@@ -136,25 +140,33 @@ export const Auth = () => {
           </button>
 
           {signUp ? (
-            <p className="flex gap-1">
+            <Typography
+              variant={"body"}
+              className="flex gap-1 items-center text-text-secondary"
+            >
               Уже есть аккаунт?{" "}
-              <span
-                className="text-[#75d253]"
+              <Typography
+                variant={"body"}
+                className="flex justify-end text-text"
                 onClick={() => setSignUp(!signUp)}
               >
                 Войти
-              </span>
-            </p>
+              </Typography>
+            </Typography>
           ) : (
-            <p className="flex gap-1">
-              Нет аккаунта?{" "}
-              <span
-                className="text-[#75d253]"
+            <Typography
+              variant={"body"}
+              className="flex gap-1 items-center text-text-secondary"
+            >
+              Нет аккаунта?
+              <Typography
+                variant={"body"}
+                className="flex justify-end text-text"
                 onClick={() => setSignUp(!signUp)}
               >
                 Зарегистрируйтесь
-              </span>
-            </p>
+              </Typography>
+            </Typography>
           )}
         </div>
       </div>

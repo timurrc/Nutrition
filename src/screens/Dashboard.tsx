@@ -13,6 +13,8 @@ import { Card } from "../components/ui/Card";
 import { Container } from "../components/ui/Container";
 import { useState } from "react";
 import { WaterRepository } from "../repositories/waterRepository";
+import { Typography } from "../components/ui/Typography";
+import { Input } from "../components/ui/Input";
 
 interface IWaterVolume {
   id: number;
@@ -61,7 +63,10 @@ export const Dashboard = () => {
   return (
     <Container>
       <div className="flex flex-col w-full">
-        <h2 className=" items-start text-lg">Сегодня</h2>
+        <Typography variant={"h2"} className="items-start">
+          Сегодня
+        </Typography>
+
         <div className="flex justify-center items-center">
           <ProgressRing progress={42} color={"calories"} variant={"big"} />
         </div>
@@ -72,8 +77,11 @@ export const Dashboard = () => {
             "flex flex-col rounded-xl bg-surface gap-1 w-full items-center py-4"
           }
         >
-          <b>Белки</b>
-          <p>120/180</p>
+          <Typography variant={"body"} className="font-semibold">
+            Белки
+          </Typography>
+          <Typography variant={"body"}>120/180</Typography>
+
           <ProgressRing
             progress={34}
             color={"protein"}
@@ -85,8 +93,11 @@ export const Dashboard = () => {
             "flex flex-col rounded-xl bg-surface gap-1 w-full items-center py-4"
           }
         >
-          <b>Жиры</b>
-          <p>120/180</p>
+          <Typography variant={"body"} className="font-semibold">
+            Жиры
+          </Typography>
+          <Typography variant={"body"}>120/180</Typography>
+
           <ProgressRing
             progress={34}
             color={"fat"}
@@ -98,8 +109,11 @@ export const Dashboard = () => {
             "flex flex-col rounded-xl bg-surface gap-1 w-full items-center py-4 px-2"
           }
         >
-          <b>Углеводы</b>
-          <p>120/180</p>
+          <Typography variant={"body"} className="font-semibold">
+            Углеводы
+          </Typography>
+          <Typography variant={"body"}>120/180</Typography>
+
           <ProgressRing
             progress={34}
             color={"carbs"}
@@ -110,9 +124,17 @@ export const Dashboard = () => {
       <div>
         <Card className="flex justify-between w-full items-center bg-surface mt-5 rounded-xl py-4 px-4">
           <div className="flex flex-col gap-2 items-start">
-            <b>Вода</b>
+            <Typography variant={"body"} className="font-semibold">
+              Вода
+            </Typography>
+
             <div className="flex items-center">
-              <b>3.2 </b> <p className="text-gray-500 ml-2"> / 4,5 л</p>
+              <Typography variant={"body"} className="font-semibold">
+                3.2
+              </Typography>
+              <Typography variant={"body"} className="text-gray-500 ml-2">
+                / 4,5 л
+              </Typography>
             </div>
           </div>
           <div
@@ -126,9 +148,11 @@ export const Dashboard = () => {
       {isOpen && (
         <div className="flex justify-center  ">
           <div className="fixed top-10 bg-[#1C2128] border border-[#2A313C] rounded-xl h-150 w-92 flex flex-col gap-4 px-4 py-5 ">
-            <h2 className="text-xl font-semibold">Добавить воду</h2>
+            <Typography variant={"h2"}>Добавить воду</Typography>
+
             <div className="flex flex-col gap-4">
-              <p className="text-gray-500">Количество</p>
+              <Typography variant={"body"}>Количество</Typography>
+
               <div className="flex justify-between items-center w-full">
                 <div
                   className="p-4 bg-[#2A313C] rounded-full"
@@ -136,9 +160,8 @@ export const Dashboard = () => {
                 >
                   <Minus />
                 </div>
-                <h1 className="text-2xl font-semibold">
-                  {formData.addWater} мл
-                </h1>
+                <Typography variant={"h1"}> {formData.addWater} мл</Typography>
+
                 <div
                   className="p-4 bg-[#2A313C] rounded-full"
                   onClick={() => handleChangeVolume("increment")}
@@ -148,7 +171,8 @@ export const Dashboard = () => {
               </div>
             </div>
             <div className="flex flex-col gap-4">
-              <p className="text-gray-500">Быстрый выбор</p>
+              <Typography variant={"body"}>Быстрый выбор</Typography>
+
               <div className="grid grid-cols-2 gap-2 w-full">
                 {waterVolume.map((item) => {
                   const IconComponent = item.icon;
@@ -160,8 +184,8 @@ export const Dashboard = () => {
                     >
                       <IconComponent size={24} />
                       <div className="flex flex-col">
-                        <p>{item.title}</p>
-                        <p>мл</p>
+                        <Typography variant={"body"}>{item.title}</Typography>
+                        <Typography variant={"body"}>мл</Typography>
                       </div>
                     </Card>
                   );
@@ -169,12 +193,14 @@ export const Dashboard = () => {
               </div>
             </div>
             <div className="flex flex-col gap-4">
-              <p className="text-gray-500">Заметка (необязательно)</p>
-              <input
-                type="text"
-                maxLength={60}
+              <Typography variant={"body"}>Заметка (необязательно)</Typography>
+              <Input
+                type={"text"}
+                value={formData.description}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
                 placeholder="Например: после тренировки"
-                className="w-full bg-[#2A313C] px-4 py-4 rounded-xl outline-none"
               />
             </div>
 
@@ -186,7 +212,7 @@ export const Dashboard = () => {
             </button>
             <div className="text-gray-500 flex items-center gap-2 justify-center">
               <Droplet />
-              <p>Цель на сегодня 2 500мл</p>
+              <Typography variant={"body"}>Цель на сегодня 2 500мл</Typography>
             </div>
           </div>
         </div>
