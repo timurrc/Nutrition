@@ -75,7 +75,7 @@ export const Dashboard = () => {
       <div className="flex justify-between gap-2 mt-5">
         <Card
           className={
-            "flex flex-col rounded-xl bg-surface gap-1 w-full items-center py-4"
+            "flex flex-col rounded-lg border border-border bg-surface shadow-sm gap-1 w-full items-center py-4"
           }
         >
           <Typography variant={"body"} className="font-semibold">
@@ -91,7 +91,7 @@ export const Dashboard = () => {
         </Card>
         <Card
           className={
-            "flex flex-col rounded-xl bg-surface gap-1 w-full items-center py-4"
+            "flex flex-col rounded-lg border border-border bg-surface shadow-sm gap-1 w-full items-center py-4"
           }
         >
           <Typography variant={"body"} className="font-semibold">
@@ -107,7 +107,7 @@ export const Dashboard = () => {
         </Card>
         <Card
           className={
-            "flex flex-col rounded-xl bg-surface gap-1 w-full items-center py-4 px-2"
+            "flex flex-col rounded-lg border border-border bg-surface shadow-sm gap-1 w-full items-center py-4 px-2"
           }
         >
           <Typography variant={"body"} className="font-semibold">
@@ -123,7 +123,7 @@ export const Dashboard = () => {
         </Card>
       </div>
       <div>
-        <Card className="flex justify-between w-full items-center bg-surface mt-5 rounded-xl py-4 px-4">
+        <Card className="mt-5 flex w-full items-center justify-between rounded-lg border border-border bg-surface px-4 py-4 shadow-sm">
           <div className="flex flex-col gap-2 items-start">
             <Typography variant={"body"} className="font-semibold">
               Вода
@@ -133,13 +133,13 @@ export const Dashboard = () => {
               <Typography variant={"body"} className="font-semibold">
                 3.2
               </Typography>
-              <Typography variant={"body"} className="text-gray-500 ml-2">
+              <Typography variant={"body"} className="ml-2 text-text-secondary">
                 / 4,5 л
               </Typography>
             </div>
           </div>
           <div
-            className="bg-surface p-2 rounded-full"
+            className="cursor-pointer rounded-full bg-primary/10 p-2 text-primary transition-colors hover:bg-primary/15"
             onClick={() => setIsOpen(!isOpen)}
           >
             <Plus />
@@ -148,7 +148,7 @@ export const Dashboard = () => {
       </div>
       {isOpen && (
         <div className="flex justify-center">
-          <div className="fixed top-20 bg-surface border border-border rounded-xl h-150 w-92 flex flex-col gap-4 px-4 py-5 ">
+          <div className="fixed top-20 flex h-150 w-92 flex-col gap-4 rounded-lg border border-border bg-surface px-4 py-5 shadow-lg">
             <Typography variant={"h2"}>Добавить воду</Typography>
 
             <div className="flex flex-col gap-4">
@@ -156,7 +156,7 @@ export const Dashboard = () => {
 
               <div className="flex justify-between items-center w-full">
                 <div
-                  className="p-4 bg-surface-secondary rounded-full"
+                  className="cursor-pointer rounded-full bg-surface-secondary p-3 transition-colors hover:bg-border"
                   onClick={() => handleChangeVolume("decrement")}
                 >
                   <Minus />
@@ -164,7 +164,7 @@ export const Dashboard = () => {
                 <Typography variant={"h1"}> {formData.addWater} мл</Typography>
 
                 <div
-                  className="p-4 bg-surface-secondary rounded-full"
+                  className="cursor-pointer rounded-full bg-surface-secondary p-3 transition-colors hover:bg-border"
                   onClick={() => handleChangeVolume("increment")}
                 >
                   <Plus />
@@ -179,7 +179,7 @@ export const Dashboard = () => {
                   const IconComponent = item.icon;
                   return (
                     <Card
-                      className={`flex items-center gap-2 bg-surface-secondary  px-4 py-3 rounded-xl ${formData.addWater === item.title ? "border border-[#60A5FA]" : "border border-border"}`}
+                      className={`flex items-center gap-2 rounded-lg border bg-surface-secondary px-4 py-3 ${formData.addWater === item.title ? "border-primary ring-2 ring-primary/10" : "border-border"}`}
                       onClick={() => handleSelectVolume(item.title)}
                       key={item.id}
                     >
@@ -208,7 +208,7 @@ export const Dashboard = () => {
               Добавить {formData.addWater} мл воды
             </Button>
 
-            <div className="text-gray-500 flex items-center gap-2 justify-center">
+            <div className="flex items-center justify-center gap-2 text-text-secondary">
               <Droplet />
               <Typography variant={"body"}>Цель на сегодня 2 500мл</Typography>
             </div>
