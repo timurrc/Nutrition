@@ -11,10 +11,10 @@ interface IProgressRing {
 }
 
 const COLOR_MAP: Record<ProgressRingColor, string> = {
-  protein: "#67E8A5",
-  carbs: "#A78BFA",
-  fat: "#FFB84D",
-  calories: "#2ecc71",
+  protein: "#1677ff",
+  carbs: "#8b5cf6",
+  fat: "#d97706",
+  calories: "#1677ff",
 };
 
 const SIZE_MAP: Record<ProgressRingVariant, number> = {
@@ -53,7 +53,7 @@ export const ProgressRing: FC<IProgressRing> = ({
           cx={center}
           cy={center}
           r={radius}
-          stroke="#eef2ef"
+          stroke="#f0f0f0"
           strokeWidth={currentStrokeWidth}
           fill="none"
         />
@@ -78,20 +78,18 @@ export const ProgressRing: FC<IProgressRing> = ({
           position: "absolute",
           top: "50%",
           left: "50%",
-
-          color: "#f4f7f7",
           transform: "translate(-50%, -50%)",
         }}
       >
         {variant === "normal" ? (
-          <p className="text-text">{progress}%</p>
+          <p className="text-text text-sm font-medium">{progress}%</p>
         ) : (
           <div className="flex flex-col items-center">
-            <p className="text-text ">Съедено</p>
-            <h1 className="text-4xl text-text font-semibold ">1650</h1>
-            <p className="text-gray-400 mb-1">/ 1950 ккал</p>
-            <p className="text-gray-400">Осталось</p>
-            <p className="text-[#2ecc71]">400</p>
+            <p className="text-text-secondary text-sm">Съедено</p>
+            <h1 className="text-4xl font-semibold text-text">1650</h1>
+            <p className="mb-1 text-text-secondary">/ 1950 ккал</p>
+            <p className="text-text-secondary">Осталось</p>
+            <p className="font-semibold text-success">400</p>
           </div>
         )}
       </div>
