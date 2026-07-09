@@ -30,23 +30,23 @@ export const Input: FC<IInput> = ({
           className={`relative ${type === "date" && "overflow-hidden items-center rounded-xl"}`}
         >
           {iconSide === "left" && (
-            <Icon className="absolute top-4 left-5 text-gray-500" />
+            <Icon className="absolute top-1/2 -translate-y-1/2 left-4 size-4 text-text-secondary" />
           )}
           {type === "date" && value.length === 0 && (
-            <label className="absolute top-4 left-15 text-gray-400">
+            <label className="absolute top-1/2 -translate-y-1/2 left-14 text-placeholder">
               Birthdate
             </label>
           )}
           <input
             placeholder={placeholder}
             type={type}
-            className={`${className} w-full bg-surface rounded-xl outline-none ${iconSide === "left" ? "px-14 py-4" : "pr-14 pl-4"}`}
+            className={`${className ?? ""} w-full h-11 bg-surface border border-border rounded-lg outline-none transition-colors placeholder:text-placeholder focus:border-primary focus:ring-2 focus:ring-primary/10 ${iconSide === "left" ? "pl-11 pr-4" : "pl-4 pr-11"}`}
             onChange={onChange}
             value={value}
           />
 
           {iconSide === "right" && (
-            <Icon className="absolute top-4 right-4 text-gray-500" />
+            <Icon className="absolute top-1/2 -translate-y-1/2 right-4 size-4 text-text-secondary" />
           )}
         </div>
       )}

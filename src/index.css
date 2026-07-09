@@ -6,47 +6,48 @@
 body {
   background: var(--color-background);
   color: var(--color-text);
+  font-family: "Plus Jakarta Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 @theme {
-  --color-background: #f6f7f6;
+  --color-background: #f5f5f5;
   --color-surface: #ffffff;
-  --color-surface-secondary: #eef2ef;
+  --color-surface-secondary: #fafafa;
 
-  --color-border: #e3e7e3;
+  --color-border: #e5e7eb;
+  --color-border-secondary: #f0f0f0;
 
-  --color-text: #1f2937;
-  --color-text-button: #fff;
+  --color-text: #111827;
+  --color-text-button: #ffffff;
   --color-text-secondary: #6b7280;
   --color-placeholder: #9ca3af;
 
-  --color-primary: #65c466;
-  --color-primary-hover: #57b659;
+  --color-primary: #1677ff;
+  --color-primary-hover: #4096ff;
+  --color-secondary: #8b5cf6;
 
-  --color-disabled: #d8e7d8;
+  --color-disabled: #f5f5f5;
 
-  --color-protein: #4da6ff;
-  --color-fat: #ffb84d;
-  --color-carbs: #a78bfa;
-  --color-water: #3db8ff;
+  --color-protein: #1677ff;
+  --color-fat: #d97706;
+  --color-carbs: #8b5cf6;
+  --color-water: #1677ff;
 
-  --color-success: #22c55e;
-  --color-warning: #f4b942;
-  --color-danger: #ef4444;
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+  --color-danger: #dc2626;
 }
-/* Стили для контейнера вынесены отдельно, чтобы избежать конфликтов v4 */
+
 html,
 body,
 #root,
 #__next {
-  scrollbar-width: none; /* Для Firefox Mobile */
-  -ms-overflow-style: none; /* Для старых Windows/Edge устройств */
-
-  /* Плавный мобильный скролл (критично для iOS) */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch;
 }
 
-/* 2. Скрытие для всех WebKit-браузеров (Safari на iOS, Chrome на Android) */
 html::-webkit-scrollbar,
 body::-webkit-scrollbar,
 #root::-webkit-scrollbar,
@@ -54,10 +55,9 @@ body::-webkit-scrollbar,
   display: none !important;
   width: 0 !important;
   height: 0 !important;
-  background: transparent !important; /* Убирает возможные фантомные треки */
+  background: transparent !important;
 }
 
-/* 3. Если у вас используется отдельный блок со скроллом внутри PWA */
 .scroll-container {
   overflow: auto;
   scrollbar-width: none;

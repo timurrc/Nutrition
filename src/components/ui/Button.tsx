@@ -18,8 +18,9 @@ export const Button: FC<IButton> = ({
 }) => {
   const variants = {
     primary:
-      "py-4 bg-primary active:bg-primary-hover active:transition-all text-text-button w-full rounded-xl font-semibold",
-    disabled: "py-4 bg-disabled text-black w-full rounded-xl font-semibold",
+      "h-11 bg-primary hover:bg-primary-hover active:bg-primary-hover transition-colors text-text-button w-full rounded-lg font-medium text-base shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30",
+    disabled:
+      "h-11 bg-disabled text-text-secondary w-full rounded-lg font-medium cursor-not-allowed",
   };
 
   return (

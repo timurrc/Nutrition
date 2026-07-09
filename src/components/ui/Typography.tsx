@@ -20,27 +20,27 @@ export const Typography: FC<ITypography> = ({
   const variants = {
     h1: {
       tag: "h1",
-      className: "text-2xl font-semibold",
+      className: "text-[32px] leading-10 font-semibold tracking-tight text-text",
     },
 
     h2: {
       tag: "h2",
-      className: "text-xl font-semibold",
+      className: "text-2xl font-semibold text-text",
     },
 
     h3: {
       tag: "h3",
-      className: "text-lg font-semibold",
+      className: "text-xl font-semibold text-text",
     },
 
     body: {
       tag: "p",
-      className: "text-base",
+      className: "text-base text-text",
     },
 
     bodySmall: {
       tag: "p",
-      className: "text-sm",
+      className: "text-sm text-text",
     },
 
     caption: {
