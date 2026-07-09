@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { db } from "../db/db";
 import { UserRepository } from "../repositories/userRepository";
+import { Input } from "../components/ui/Input";
+import { Typography } from "../components/ui/Typography";
+import { Button } from "../components/ui/Button";
 
 interface IAuth {
   email: string;
@@ -65,80 +68,67 @@ export const Auth = () => {
       <div className="flex flex-col justify-center items-center gap-8 mt-20">
         <img src={logo} className="w-36" alt="" />
         <div className="flex flex-col gap-2 text-center">
-          <h2 className="text-2xl font-semibold text-[#111827]">Добро пожаловать!</h2>
-          <p className="text-[#6b7280]">
+          <Typography variant={"h2"}>Добро пожаловать!</Typography>
+
+          <Typography variant={"body"} className="text-text-secondary">
             {signUp ? "Создайте" : "Войдите в "} аккаунт, чтобы
             {signUp ? " начать" : "продолжить"} свой путь к цели
-          </p>
+          </Typography>
         </div>
         <div className="flex flex-col gap-2 w-full">
-          <div className="relative w-full">
-            <Mail className="absolute top-1/2 -translate-y-1/2 left-4 size-4 text-[#6b7280]" />
-            <input
-              type="text"
-              className="h-11 w-full rounded-lg border border-[#e5e7eb] bg-white pl-11 pr-4 outline-none transition-colors focus:border-[#1677ff] focus:ring-2 focus:ring-[#1677ff]/10"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData({ ...formData, email: e.target.value })
-              }
-              placeholder="Email"
-            />
-          </div>
-          <div className="relative w-full">
-            <Lock className="absolute top-1/2 -translate-y-1/2 left-4 size-4 text-[#6b7280]" />
-            <input
-              type="password"
-              className="h-11 w-full rounded-lg border border-[#e5e7eb] bg-white pl-11 pr-4 outline-none transition-colors focus:border-[#1677ff] focus:ring-2 focus:ring-[#1677ff]/10"
-              value={formData.password}
-              placeholder="Password"
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-            />
-          </div>
+          <Input
+            placeholder={"Email"}
+            type={"email"}
+            value={formData.email}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
+            icon={Mail}
+            iconSide="left"
+          />
+          <Input
+            placeholder={"Password"}
+            type={"password"}
+            value={formData.password}
+            onChange={(e) =>
+              setFormData({ ...formData, password: e.target.value })
+            }
+            icon={Lock}
+            iconSide="left"
+          />
+
           {signUp && (
             <>
-              <div className="relative w-full">
-                <Lock className="absolute top-1/2 -translate-y-1/2 left-4 size-4 text-[#6b7280]" />
-                <input
-                  type="password"
-                  className="h-11 w-full rounded-lg border border-[#e5e7eb] bg-white pl-11 pr-4 outline-none transition-colors focus:border-[#1677ff] focus:ring-2 focus:ring-[#1677ff]/10"
-                  value={formData.confirmPassword}
-                  placeholder="Confirm password"
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      confirmPassword: e.target.value,
-                    })
-                  }
-                />
-              </div>
-              <div className="relative w-full overflow-hidden items-center">
-                <Calendar className="absolute top-1/2 -translate-y-1/2 left-4 size-4 text-[#6b7280]" />
-                {formData.date?.length === null && (
-                  <p className="absolute top-1/2 -translate-y-1/2 left-14 text-[#6b7280]">
-                    Enter the date
-                  </p>
-                )}
-                <input
-                  type="date"
-                  className="h-11 w-full appearance-none rounded-lg border border-[#e5e7eb] bg-white py-2 pl-14 pr-4 text-left outline-none transition-colors focus:border-[#1677ff] focus:ring-2 focus:ring-[#1677ff]/10"
-                  value={formData.date}
-                  placeholder=""
-                  onChange={(e) =>
-                    setFormData({ ...formData, date: e.target.value })
-                  }
-                />
-              </div>
+              <Input
+                placeholder={"Confirm password"}
+                type={"password"}
+                value={formData.confirmPassword ?? ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, confirmPassword: e.target.value })
+                }
+                icon={Lock}
+                iconSide="left"
+              />
+              <Input
+                type={"date"}
+                value={formData.date ?? ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, date: e.target.value })
+                }
+                icon={Calendar}
+                iconSide="left"
+              />
             </>
           )}
           {!signUp && (
-            <p className="flex justify-end text-[#1677ff]">Забыли пароль?</p>
+            <Typography variant={"body"} className="flex justify-end text-primary">
+              Забыли пароль?
+            </Typography>
           )}
         </div>
         <div className="flex flex-col gap-3 w-full items-center">
-          <button
-            className="h-11 w-full rounded-lg bg-[#1677ff] font-medium text-white shadow-sm transition-colors hover:bg-[#4096ff]"
+          <Button
+            variant="primary"
             onClick={() => {
               if (signUp) {
                 handleRegister();
@@ -148,28 +138,36 @@ export const Auth = () => {
             }}
           >
             {signUp ? "Зарегистрироваться" : "Войти"}
-          </button>
+          </Button>
 
           {signUp ? (
-            <p className="flex gap-1">
+            <Typography
+              variant={"body"}
+              className="flex gap-1 items-center text-text-secondary"
+            >
               Уже есть аккаунт?{" "}
-              <span
-                className="cursor-pointer text-[#1677ff]"
+              <Typography
+                variant={"body"}
+                className="cursor-pointer text-primary"
                 onClick={() => setSignUp(!signUp)}
               >
                 Войти
-              </span>
-            </p>
+              </Typography>
+            </Typography>
           ) : (
-            <p className="flex gap-1">
-              Нет аккаунта?{" "}
-              <span
-                className="cursor-pointer text-[#1677ff]"
+            <Typography
+              variant={"body"}
+              className="flex gap-1 items-center text-text-secondary"
+            >
+              Нет аккаунта?
+              <Typography
+                variant={"body"}
+                className="cursor-pointer text-primary"
                 onClick={() => setSignUp(!signUp)}
               >
                 Зарегистрируйтесь
-              </span>
-            </p>
+              </Typography>
+            </Typography>
           )}
         </div>
       </div>
