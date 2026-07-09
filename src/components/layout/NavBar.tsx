@@ -6,16 +6,17 @@ export const Navbar = () => {
   return (
     <div>
       <Outlet />
-      <div className="fixed bottom-5 flex justify-center w-full">
-        <div className="flex justify-between px-6 py-5 gap-8 bg-surface rounded-full">
+      <div className="fixed bottom-5 left-0 right-0 z-50 flex justify-center px-4">
+        <div className="flex w-full max-w-lg items-center justify-between rounded-full border border-border bg-surface px-6 py-3 shadow-md">
           {navLinks.map((item: iNavLinks) => {
             const IconComponent = item.icon;
             return (
               <div
-                className="flex flex-col items-center gap-1 "
+                className="flex cursor-pointer flex-col items-center gap-1 text-text-secondary transition-colors hover:text-primary"
                 onClick={() => navigate(item.link)}
               >
-                <IconComponent size={24} />
+                <IconComponent size={22} strokeWidth={1.75} />
+                <p className="text-xs font-medium">{item.title}</p>
               </div>
             );
           })}
