@@ -80,9 +80,10 @@ export const Log = () => {
 
   return (
     <Container>
-      <h2 className="text-xl mb-4">Дневник</h2>
-      <div className="flex justify-between w-full bg-[#161B22] rounded-lg px-4 py-3 mb-4">
+      <h2 className="mb-4 text-2xl font-semibold text-[#111827]">Дневник</h2>
+      <div className="mb-4 flex w-full items-center justify-between rounded-lg border border-[#e5e7eb] bg-white px-4 py-3 shadow-sm">
         <ChevronLeft
+          className="cursor-pointer text-[#6b7280] transition-colors hover:text-[#1677ff]"
           onClick={() =>
             setSelectedDate((prev) => {
               const next = new Date(prev);
@@ -91,7 +92,7 @@ export const Log = () => {
             })
           }
         />
-        <h2 className="text-xl text-semibold">
+        <h2 className="text-xl font-semibold text-[#111827]">
           {isToday
             ? "Сегодня"
             : selectedDate.toLocaleDateString("ru-RU", {
@@ -100,6 +101,7 @@ export const Log = () => {
               })}
         </h2>
         <ChevronRight
+          className="cursor-pointer text-[#6b7280] transition-colors hover:text-[#1677ff]"
           onClick={() =>
             setSelectedDate((prev) => {
               const next = new Date(prev);
