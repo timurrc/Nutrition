@@ -5,5 +5,7 @@ interface IContainer {
 }
 
 export const Container: FC<IContainer> = ({ children }) => {
-  return <div className="mx-auto px-2 py-2">{children}</div>;
+  return (
+    <div className="mx-auto w-full max-w-lg px-4 py-4 pb-24">{children}</div>
+  );
 };
