@@ -5,6 +5,8 @@ import { Food, foods } from "../consts/dishes";
 import { Plus, Search, Star } from "lucide-react";
 import { MealRepository } from "../repositories/mealRepository";
 import { MealType } from "../db/db";
+import { Typography } from "../components/ui/Typography";
+import { Button } from "../components/ui/Button";
 
 export const Meal = () => {
   const [pickedId, setPickedId] = useState<number | null>(null);
@@ -39,36 +41,40 @@ export const Meal = () => {
   };
   return (
     <Container>
-      <h2 className="mb-4 text-2xl font-semibold text-[#111827]">
+      <Typography variant={"h2"} className="mb-4">
         Добавьте прием пищи
-      </h2>
-      <div className="relative mb-4 rounded-lg border border-[#e5e7eb] bg-white px-4 py-2">
-        <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#6b7280]" />
+      </Typography>
+
+      <div className="relative mb-4 rounded-lg border border-border bg-surface px-4 py-2">
+        <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-text-secondary" />
         <input
           type="text"
           placeholder="Поиск продуктов"
-          className="h-9 w-full bg-transparent pl-8 outline-none placeholder:text-[#9ca3af]"
+          className="h-9 w-full bg-transparent pl-8 outline-none placeholder:text-placeholder"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
       <div className="mb-4 flex flex-col gap-2">
         <div className="flex justify-between">
-          <p className="font-medium text-[#111827]">Популярные</p>
-          <p
-            className="cursor-pointer text-[#1677ff]"
+          <Typography variant={"body"} className="font-medium">
+            Популярные
+          </Typography>
+          <Typography
+            variant={"body"}
+            className="cursor-pointer text-primary"
             onClick={() => {
               setFull(!full);
             }}
           >
             {full ? "Свернуть" : "Показать еще"}
-          </p>
+          </Typography>
         </div>
         {visibleFoods.map((item: Food) => (
           <div
             onClick={() => setPickedId(item.id)}
             key={item.id}
-            className={`flex w-full cursor-pointer items-center justify-between rounded-lg border px-3 py-3 transition-colors ${pickedId === item.id ? "border-[#1677ff] bg-[#fafafa] ring-2 ring-[#1677ff]/10" : "border-[#e5e7eb] bg-white hover:border-[#1677ff]/40"}`}
+            className={`flex w-full cursor-pointer items-center justify-between rounded-lg border px-3 py-3 transition-colors ${pickedId === item.id ? "border-primary bg-surface-secondary ring-2 ring-primary/10" : "border-border bg-surface hover:border-primary/40"}`}
           >
             <div className="flex items-center gap-4">
               <img
@@ -78,19 +84,26 @@ export const Meal = () => {
                 loading="lazy"
               />
               <div className="flex flex-col items-start">
-                <p className="font-medium text-[#111827]">{item.title}</p>
-                <div className="flex items-center gap-1 text-[#6b7280]">
-                  <p>{item.per}г ⋅</p>
-                  <p>{item.calories} ккал</p>
+                <Typography variant={"body"} className="font-medium">
+                  {item.title}
+                </Typography>
+
+                <div className="flex items-center gap-1">
+                  <Typography variant={"body"} className="text-text-secondary">
+                    {item.per}г ⋅
+                  </Typography>
+                  <Typography variant={"body"} className="text-text-secondary">
+                    {item.calories} ккал
+                  </Typography>
                 </div>
               </div>
             </div>
-            <Plus className="text-[#1677ff]" size={20} />
+            <Plus className="text-primary" size={20} />
           </div>
         ))}
       </div>
       {selectedFood && (
-        <Card className="flex flex-col gap-6 rounded-lg border border-[#e5e7eb] bg-white px-4 py-4 shadow-sm">
+        <Card className="flex flex-col gap-6 rounded-lg border border-border bg-surface px-4 py-4 shadow-sm">
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center gap-4">
               <img
@@ -100,52 +113,69 @@ export const Meal = () => {
                 loading="lazy"
               />
               <div className="flex flex-col items-start">
-                <p className="font-medium text-[#111827]">{selectedFood.title}</p>
-                <div className="flex items-center gap-1 text-[#6b7280]">
-                  <p>{selectedFood.per}г ⋅</p>
-                  <p>{selectedFood.calories} ккал</p>
+                <Typography variant={"body"} className="font-medium">
+                  {selectedFood.title}
+                </Typography>
+
+                <div className="flex items-center gap-1">
+                  <Typography variant={"body"} className="text-text-secondary">
+                    {selectedFood.per}г ⋅
+                  </Typography>
+                  <Typography variant={"body"} className="text-text-secondary">
+                    {selectedFood.calories} ккал
+                  </Typography>
                 </div>
               </div>
             </div>
-            {/* <Star className="text-gray-300 w-14" /> */}
           </div>
           <div className="flex items-center justify-between gap-2">
             <div className="flex flex-col text-center">
-              <p className="text-sm text-[#6b7280]">Белки</p>
-              <p className="font-semibold text-[#1677ff]">{selectedFood.protein}</p>
+              <Typography variant={"body"} className="text-sm text-text-secondary">
+                Белки
+              </Typography>
+              <Typography variant={"body"} className="font-semibold text-protein">
+                {selectedFood.protein}
+              </Typography>
             </div>
             <div className="flex flex-col text-center">
-              <p className="text-sm text-[#6b7280]">Жиры</p>
-              <p className="font-semibold text-[#d97706]">{selectedFood.fat}</p>
+              <Typography variant={"body"} className="text-sm text-text-secondary">
+                Жиры
+              </Typography>
+              <Typography variant={"body"} className="font-semibold text-fat">
+                {selectedFood.protein}
+              </Typography>
             </div>
             <div className="flex flex-col text-center">
-              <p className="text-sm text-[#6b7280]">Углеводы</p>
-              <p className="font-semibold text-[#8b5cf6]">{selectedFood.carbs}</p>
+              <Typography variant={"body"} className="text-sm text-text-secondary">
+                Углеводы
+              </Typography>
+              <Typography variant={"body"} className="font-semibold text-carbs">
+                {selectedFood.carbs}
+              </Typography>
             </div>
             <div className="flex flex-col text-center">
-              <p className="text-sm text-[#6b7280]">Калории</p>
-              <p className="font-semibold text-[#1677ff]">
-                {selectedFood.calories} ккал
-              </p>
+              <Typography variant={"body"} className="text-sm text-text-secondary">
+                Калории
+              </Typography>
+              <Typography variant={"body"} className="font-semibold text-primary">
+                {selectedFood.calories}
+              </Typography>
             </div>
           </div>
           <select
             name="mealType"
             id="mealTypeList"
             onChange={(e) => setSelect(e.target.value as MealType)}
-            className="h-11 w-full min-w-full rounded-lg border border-[#e5e7eb] bg-white px-4 outline-none transition-colors focus:border-[#1677ff] focus:ring-2 focus:ring-[#1677ff]/10"
+            className="h-11 w-full min-w-full rounded-lg border border-border bg-surface px-4 outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/10"
           >
             <option value="breakfast">Завтрак</option>
             <option value="lunch">Обед</option>
             <option value="dinner">Ужин</option>
             <option value="snack">Перекус</option>
           </select>
-          <button
-            className="h-11 rounded-lg bg-[#1677ff] py-2 text-center font-medium text-white shadow-sm transition-colors hover:bg-[#4096ff]"
-            onClick={() => handleUpdateMeal()}
-          >
+          <Button variant="primary" onClick={() => handleUpdateMeal()}>
             Добавить в дневник
-          </button>
+          </Button>
         </Card>
       )}
     </Container>
