@@ -80,8 +80,9 @@ export const Log = () => {
         Дневник
       </Typography>
 
-      <div className="flex justify-between w-full bg-surface rounded-lg px-4 py-3 mb-4">
+      <div className="mb-4 flex w-full items-center justify-between rounded-lg border border-border bg-surface px-4 py-3 shadow-sm">
         <ChevronLeft
+          className="cursor-pointer text-text-secondary transition-colors hover:text-primary"
           onClick={() =>
             setSelectedDate((prev) => {
               const next = new Date(prev);
@@ -100,6 +101,7 @@ export const Log = () => {
         </Typography>
 
         <ChevronRight
+          className="cursor-pointer text-text-secondary transition-colors hover:text-primary"
           onClick={() =>
             setSelectedDate((prev) => {
               const next = new Date(prev);
