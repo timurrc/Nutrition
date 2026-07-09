@@ -65,18 +65,18 @@ export const Auth = () => {
       <div className="flex flex-col justify-center items-center gap-8 mt-20">
         <img src={logo} className="w-36" alt="" />
         <div className="flex flex-col gap-2 text-center">
-          <h2 className="text-2xl font-semibold">Добро пожаловать!</h2>
-          <p className="text-gray-500">
+          <h2 className="text-2xl font-semibold text-[#111827]">Добро пожаловать!</h2>
+          <p className="text-[#6b7280]">
             {signUp ? "Создайте" : "Войдите в "} аккаунт, чтобы
             {signUp ? " начать" : "продолжить"} свой путь к цели
           </p>
         </div>
         <div className="flex flex-col gap-2 w-full">
           <div className="relative w-full">
-            <Mail className="absolute top-4 left-5 text-gray-500" />
+            <Mail className="absolute top-1/2 -translate-y-1/2 left-4 size-4 text-[#6b7280]" />
             <input
               type="text"
-              className="w-full bg-[#1C2128] px-14 py-4 rounded-xl"
+              className="h-11 w-full rounded-lg border border-[#e5e7eb] bg-white pl-11 pr-4 outline-none transition-colors focus:border-[#1677ff] focus:ring-2 focus:ring-[#1677ff]/10"
               value={formData.email}
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
@@ -85,10 +85,10 @@ export const Auth = () => {
             />
           </div>
           <div className="relative w-full">
-            <Lock className="absolute top-4 left-5 text-gray-500" />
+            <Lock className="absolute top-1/2 -translate-y-1/2 left-4 size-4 text-[#6b7280]" />
             <input
               type="password"
-              className="w-full bg-[#1C2128] px-14 py-4 rounded-xl"
+              className="h-11 w-full rounded-lg border border-[#e5e7eb] bg-white pl-11 pr-4 outline-none transition-colors focus:border-[#1677ff] focus:ring-2 focus:ring-[#1677ff]/10"
               value={formData.password}
               placeholder="Password"
               onChange={(e) =>
@@ -99,10 +99,10 @@ export const Auth = () => {
           {signUp && (
             <>
               <div className="relative w-full">
-                <Lock className="absolute top-4 left-5 text-gray-500" />
+                <Lock className="absolute top-1/2 -translate-y-1/2 left-4 size-4 text-[#6b7280]" />
                 <input
                   type="password"
-                  className="w-full bg-[#1C2128] px-14 py-4 rounded-xl"
+                  className="h-11 w-full rounded-lg border border-[#e5e7eb] bg-white pl-11 pr-4 outline-none transition-colors focus:border-[#1677ff] focus:ring-2 focus:ring-[#1677ff]/10"
                   value={formData.confirmPassword}
                   placeholder="Confirm password"
                   onChange={(e) =>
@@ -114,15 +114,15 @@ export const Auth = () => {
                 />
               </div>
               <div className="relative w-full overflow-hidden items-center">
-                <Calendar className="absolute top-5 left-5 text-gray-500" />
+                <Calendar className="absolute top-1/2 -translate-y-1/2 left-4 size-4 text-[#6b7280]" />
                 {formData.date?.length === null && (
-                  <p className="absolute top-4 left-14.5 text-gray-500">
+                  <p className="absolute top-1/2 -translate-y-1/2 left-14 text-[#6b7280]">
                     Enter the date
                   </p>
                 )}
                 <input
                   type="date"
-                  className="w-full bg-[#1C2128] py-4 text-left px-15 rounded-xl appearance-none"
+                  className="h-11 w-full appearance-none rounded-lg border border-[#e5e7eb] bg-white py-2 pl-14 pr-4 text-left outline-none transition-colors focus:border-[#1677ff] focus:ring-2 focus:ring-[#1677ff]/10"
                   value={formData.date}
                   placeholder=""
                   onChange={(e) =>
@@ -133,12 +133,12 @@ export const Auth = () => {
             </>
           )}
           {!signUp && (
-            <p className="flex justify-end text-[#75d253]">Забыли пароль?</p>
+            <p className="flex justify-end text-[#1677ff]">Забыли пароль?</p>
           )}
         </div>
         <div className="flex flex-col gap-3 w-full items-center">
           <button
-            className="py-4 bg-[#7FE35B] text-black w-full rounded-xl font-semibold"
+            className="h-11 w-full rounded-lg bg-[#1677ff] font-medium text-white shadow-sm transition-colors hover:bg-[#4096ff]"
             onClick={() => {
               if (signUp) {
                 handleRegister();
@@ -154,7 +154,7 @@ export const Auth = () => {
             <p className="flex gap-1">
               Уже есть аккаунт?{" "}
               <span
-                className="text-[#75d253]"
+                className="cursor-pointer text-[#1677ff]"
                 onClick={() => setSignUp(!signUp)}
               >
                 Войти
@@ -164,7 +164,7 @@ export const Auth = () => {
             <p className="flex gap-1">
               Нет аккаунта?{" "}
               <span
-                className="text-[#75d253]"
+                className="cursor-pointer text-[#1677ff]"
                 onClick={() => setSignUp(!signUp)}
               >
                 Зарегистрируйтесь

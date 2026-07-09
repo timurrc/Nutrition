@@ -4,23 +4,30 @@
 }
 
 body {
-  background: #0d1117;
-  color: #fff;
+  background: #f5f5f5;
+  color: #111827;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Стили для контейнера вынесены отдельно, чтобы избежать конфликтов v4 */
+@theme {
+  --color-background: #f5f5f5;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+  --color-text: #111827;
+  --color-text-secondary: #6b7280;
+  --color-primary: #1677ff;
+}
+
 html,
 body,
 #root,
 #__next {
-  scrollbar-width: none; /* Для Firefox Mobile */
-  -ms-overflow-style: none; /* Для старых Windows/Edge устройств */
-
-  /* Плавный мобильный скролл (критично для iOS) */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch;
 }
 
-/* 2. Скрытие для всех WebKit-браузеров (Safari на iOS, Chrome на Android) */
 html::-webkit-scrollbar,
 body::-webkit-scrollbar,
 #root::-webkit-scrollbar,
@@ -28,10 +35,9 @@ body::-webkit-scrollbar,
   display: none !important;
   width: 0 !important;
   height: 0 !important;
-  background: transparent !important; /* Убирает возможные фантомные треки */
+  background: transparent !important;
 }
 
-/* 3. Если у вас используется отдельный блок со скроллом внутри PWA */
 .scroll-container {
   overflow: auto;
   scrollbar-width: none;
