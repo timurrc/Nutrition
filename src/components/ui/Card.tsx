@@ -1,4 +1,3 @@
-import { Star } from "lucide-react";
 import { FC } from "react";
 
 interface ICard {

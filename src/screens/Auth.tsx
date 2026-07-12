@@ -3,67 +3,70 @@ import logo from "/nutrition.png";
 import { Mail, Lock, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { db } from "../db/db";
 import { UserRepository } from "../repositories/userRepository";
 import { Input } from "../components/ui/Input";
 import { Typography } from "../components/ui/Typography";
 import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
+import { setCurrentUserId } from "../utils/currentUser";
+import { resolvePostLoginPath } from "../utils/authRedirect";
 
-interface IAuth {
+type AuthForm = {
   email: string;
   password: string;
   confirmPassword?: string;
   date?: string;
-}
+};
 
 export const Auth = () => {
   const navigate = useNavigate();
-  const [isError, setIsError] = useState<boolean>(false);
-  const [signUp, setSignUp] = useState<boolean>(false);
-  const [formData, setFormData] = useState<IAuth>({
+  const [signUp, setSignUp] = useState(false);
+  const [error, setError] = useState("");
+  const [formData, setFormData] = useState<AuthForm>({
     email: "",
     password: "",
     confirmPassword: "",
     date: "",
   });
-  const handleRegister = async () => {
-    if (formData.password !== formData.confirmPassword) {
-      alert("Пароли не совпадают");
-    }
-    try {
-      const isExist = await UserRepository.findByEmail(formData.email);
-      if (isExist) {
-        alert("У вас уже есть аккаунт");
-      }
 
-      const userId = await UserRepository.create({
-        email: formData.email,
-        password: formData.password,
-        date: formData.date,
-      });
-      if (userId) {
-        localStorage.setItem("currentUserId", String(userId));
-        navigate("/onBoarding");
-      }
-    } catch (e) {
-      console.log(e);
+  const handleRegister = async () => {
+    setError("");
+    if (formData.password !== formData.confirmPassword) {
+      setError("Пароли не совпадают");
+      return;
     }
+
+    const existing = await UserRepository.findByEmail(formData.email);
+    if (existing) {
+      setError("Аккаунт с таким email уже существует");
+      return;
+    }
+
+    const userId = await UserRepository.create({
+      email: formData.email,
+      password: formData.password,
+      date: formData.date,
+    });
+
+    if (!userId) return;
+
+    setCurrentUserId(userId);
+    navigate("/onBoarding");
   };
+
   const handleAuth = async () => {
-    try {
-      const user = await UserRepository.findByEmail(formData.email);
-      if (
-        user?.email &&
-        user.password === formData.email &&
-        formData.password
-      ) {
-        navigate("/home");
-      }
-    } catch (e) {
-      console.log(e);
+    setError("");
+    const user = await UserRepository.findByEmail(formData.email);
+
+    if (!user?.id || user.password !== formData.password) {
+      setError("Неверный email или пароль");
+      return;
     }
+
+    setCurrentUserId(user.id);
+    navigate(await resolvePostLoginPath(user.id));
   };
+
   return (
     <Container>
       <div className="mx-auto flex min-h-[80vh] max-w-md flex-col justify-center gap-6 py-10">
@@ -84,14 +87,20 @@ export const Auth = () => {
             <button
               type="button"
               className={`h-10 rounded-md text-sm font-medium transition-all ${!signUp ? "bg-surface text-text shadow-sm" : "text-text-secondary"}`}
-              onClick={() => setSignUp(false)}
+              onClick={() => {
+                setSignUp(false);
+                setError("");
+              }}
             >
               Вход
             </button>
             <button
               type="button"
               className={`h-10 rounded-md text-sm font-medium transition-all ${signUp ? "bg-surface text-text shadow-sm" : "text-text-secondary"}`}
-              onClick={() => setSignUp(true)}
+              onClick={() => {
+                setSignUp(true);
+                setError("");
+              }}
             >
               Регистрация
             </button>
@@ -155,6 +164,12 @@ export const Auth = () => {
             )}
           </div>
 
+          {error && (
+            <Typography variant={"body"} className="mt-3 text-sm text-danger">
+              {error}
+            </Typography>
+          )}
+
           <div className="mt-5 flex flex-col gap-3">
             <Button
               variant="primary"
@@ -177,7 +192,10 @@ export const Auth = () => {
               <Typography
                 variant={"body"}
                 className="inline cursor-pointer text-sm font-medium text-primary"
-                onClick={() => setSignUp(!signUp)}
+                onClick={() => {
+                  setSignUp(!signUp);
+                  setError("");
+                }}
               >
                 {signUp ? "Войти" : "Зарегистрироваться"}
               </Typography>

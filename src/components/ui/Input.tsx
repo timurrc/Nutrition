@@ -10,8 +10,11 @@ interface IInput {
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   value: string;
 }
-type InputType = "text" | "password" | "date" | "email";
+type InputType = "text" | "password" | "date" | "email" | "number";
 type IconSideType = "left" | "right";
+
+const inputClass = (className?: string, withLeftIcon?: boolean, withRightIcon?: boolean) =>
+  `${className ?? ""} h-11 w-full rounded-lg border border-border bg-surface outline-none transition-colors placeholder:text-placeholder focus:border-primary focus:ring-2 focus:ring-primary/10 ${withLeftIcon ? "pl-11 pr-4" : withRightIcon ? "pl-4 pr-11" : "px-4"}`;
 
 export const Input: FC<IInput> = ({
   placeholder,
@@ -23,33 +26,41 @@ export const Input: FC<IInput> = ({
   value,
 }) => {
   const Icon = icon;
-  return (
-    <>
-      {Icon && (
-        <div
-          className={`relative ${type === "date" && "overflow-hidden items-center rounded-xl"}`}
-        >
-          {iconSide === "left" && (
-            <Icon className="absolute top-1/2 -translate-y-1/2 left-4 size-4 text-text-secondary" />
-          )}
-          {type === "date" && value.length === 0 && (
-            <label className="absolute top-1/2 -translate-y-1/2 left-14 text-placeholder">
-              Birthdate
-            </label>
-          )}
-          <input
-            placeholder={placeholder}
-            type={type}
-            className={`${className ?? ""} w-full h-11 bg-surface border border-border rounded-lg outline-none transition-colors placeholder:text-placeholder focus:border-primary focus:ring-2 focus:ring-primary/10 ${iconSide === "left" ? "pl-11 pr-4" : "pl-4 pr-11"}`}
-            onChange={onChange}
-            value={value}
-          />
 
-          {iconSide === "right" && (
-            <Icon className="absolute top-1/2 -translate-y-1/2 right-4 size-4 text-text-secondary" />
-          )}
-        </div>
+  if (!Icon) {
+    return (
+      <input
+        placeholder={placeholder}
+        type={type}
+        className={inputClass(className)}
+        onChange={onChange}
+        value={value}
+      />
+    );
+  }
+
+  return (
+    <div
+      className={`relative ${type === "date" ? "overflow-hidden rounded-xl" : ""}`}
+    >
+      {iconSide === "left" && (
+        <Icon className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-text-secondary" />
       )}
-    </>
+      {type === "date" && value.length === 0 && (
+        <label className="absolute left-14 top-1/2 -translate-y-1/2 text-placeholder">
+          Дата рождения
+        </label>
+      )}
+      <input
+        placeholder={placeholder}
+        type={type}
+        className={inputClass(className, iconSide === "left", iconSide === "right")}
+        onChange={onChange}
+        value={value}
+      />
+      {iconSide === "right" && (
+        <Icon className="absolute right-4 top-1/2 size-4 -translate-y-1/2 text-text-secondary" />
+      )}
+    </div>
   );
 };

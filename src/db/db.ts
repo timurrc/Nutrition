@@ -6,6 +6,7 @@ export interface User {
   password: string;
   date?: string;
 }
+
 export interface OnBoarding {
   id?: number;
   userId?: number;
@@ -15,9 +16,26 @@ export interface OnBoarding {
   age: number;
   target: string;
   activity: string;
+  dailyCalories?: number;
+  dailyProtein?: number;
+  dailyFat?: number;
+  dailyCarbs?: number;
+  dailyWaterMl?: number;
 }
+
+export interface CustomProduct {
+  id?: number;
+  userId: number;
+  title: string;
+  protein: number;
+  fat: number;
+  carbs: number;
+  calories: number;
+  createdAt: number;
+}
+
 export interface WaterEntry {
-  id?: string;
+  id?: number;
   userId: number;
   amount: number;
   description: string | null;
@@ -37,6 +55,7 @@ export interface MealEntry {
   mealType: MealType;
   createdAt: number;
 }
+
 export type MealType = "breakfast" | "lunch" | "dinner" | "snack";
 
 export class AppDatabase extends Dexie {
@@ -44,6 +63,7 @@ export class AppDatabase extends Dexie {
   onBoarding!: Table<OnBoarding>;
   waterEntry!: Table<WaterEntry>;
   meals!: Table<MealEntry>;
+  customProducts!: Table<CustomProduct>;
 
   constructor() {
     super("nutrition-db");
@@ -54,6 +74,15 @@ export class AppDatabase extends Dexie {
       waterEntry: "++id, userId, createdAt",
       meals: "++id, userId,createdAt",
     });
+
+    this.version(2).stores({
+      users: "++id, email",
+      onBoarding: "++id, userId",
+      waterEntry: "++id, userId, createdAt",
+      meals: "++id, userId,createdAt",
+      customProducts: "++id, userId, createdAt",
+    });
   }
 }
+
 export const db = new AppDatabase();

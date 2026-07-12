@@ -1,5 +1,4 @@
 import { Container } from "../components/ui/Container";
-import logo from "/nutrition.png";
 import {
   Mars,
   Venus,
@@ -18,28 +17,33 @@ import { OnBoardingRepository } from "../repositories/onBoardingRepository";
 import { Typography } from "../components/ui/Typography";
 import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button";
+import { getCurrentUserId } from "../utils/currentUser";
+import { calculateDailyGoals } from "../utils/nutritionGoals";
 
-interface IOnBoarding {
+type OnBoardingForm = {
   sex: Sex | null;
-  height: number | null;
-  weight: number | null;
-  age: number | null;
+  height: string;
+  weight: string;
+  age: string;
   target: Target | null;
   activity: Activity | null;
-}
-interface ITarget {
+};
+
+type TargetOption = {
   id: number;
   icon: LucideIcon;
   title: string;
   description: string;
   target: Target;
-}
-interface IActivity {
+};
+
+type ActivityOption = {
   id: number;
   title: string;
   description: string;
   activity: Activity;
-}
+};
+
 type Sex = "man" | "woman";
 type Target = "loseWeight" | "gainWeight" | "saveWeight";
 type Activity = "low" | "medium" | "high";
@@ -47,9 +51,9 @@ type Step = "Personal" | "Goal";
 
 export const OnBoarding = () => {
   const navigate = useNavigate();
-  const [isError, setIsError] = useState<boolean>(false);
+  const [isError, setIsError] = useState(false);
   const [step, setStep] = useState<Step>("Personal");
-  const targets: ITarget[] = [
+  const targets: TargetOption[] = [
     {
       id: 1,
       icon: PersonStanding,
@@ -65,51 +69,56 @@ export const OnBoarding = () => {
       target: "gainWeight",
     },
     {
-      id: 1,
+      id: 3,
       icon: CircleArrowDown,
       title: "Поддерживать",
       description: "Сохранить вес",
       target: "saveWeight",
     },
   ];
-  const activities: IActivity[] = [
+  const activities: ActivityOption[] = [
     {
       id: 1,
       title: "Низкий",
-      description: "Снизить вес",
+      description: "Мало движения в течение дня",
       activity: "low",
     },
     {
       id: 2,
       title: "Умеренный",
-      description: "Увеличить вес",
+      description: "Тренировки 3-4 раза в неделю",
       activity: "medium",
     },
     {
       id: 3,
       title: "Высокий",
-      description: "Сохранить вес",
+      description: "Интенсивные тренировки почти каждый день",
       activity: "high",
     },
   ];
-  const [formData, setFormData] = useState<IOnBoarding>({
+  const [formData, setFormData] = useState<OnBoardingForm>({
     sex: null,
-    height: null,
-    weight: null,
-    age: null,
+    height: "",
+    weight: "",
+    age: "",
     target: null,
     activity: null,
   });
-  const handleChangeStep = (step: Step) => {
-    const isCompleted = formData.sex && formData.height && formData.age;
+
+  const handleChangeStep = (nextStep: Step) => {
+    const isCompleted = formData.sex && formData.height && formData.age && formData.weight;
     if (isCompleted) {
-      setStep(step);
+      setStep(nextStep);
       setIsError(false);
     } else {
       setIsError(true);
     }
   };
+
   const handleFinishRegister = async () => {
+    const userId = getCurrentUserId();
+    if (!userId) return;
+
     const isCompleted =
       formData.sex &&
       formData.height &&
@@ -117,28 +126,36 @@ export const OnBoarding = () => {
       formData.activity &&
       formData.target &&
       formData.weight;
+
     if (!isCompleted) {
       setIsError(true);
       return;
     }
-    try {
-      const currentUserId = Number(localStorage.getItem("currentUserId"));
-      const onBoardingId = await OnBoardingRepository.create({
-        userId: currentUserId,
-        sex: formData.sex!,
-        height: Number(formData.height),
-        weight: Number(formData.weight),
-        age: Number(formData.age),
-        target: formData.target!,
-        activity: formData.activity!,
-      });
-      if (onBoardingId) {
-        navigate("/home");
-      }
-    } catch (e) {
-      console.log(e);
-    }
+
+    const profile = {
+      sex: formData.sex!,
+      height: Number(formData.height),
+      weight: Number(formData.weight),
+      age: Number(formData.age),
+      target: formData.target!,
+      activity: formData.activity!,
+    };
+
+    const goals = calculateDailyGoals(profile);
+
+    await OnBoardingRepository.upsert(userId, {
+      userId,
+      ...profile,
+      dailyCalories: goals.calories,
+      dailyProtein: goals.protein,
+      dailyFat: goals.fat,
+      dailyCarbs: goals.carbs,
+      dailyWaterMl: goals.waterMl,
+    });
+
+    navigate("/");
   };
+
   return (
     <Container>
       <div className="mx-auto mb-8 mt-6 flex max-w-md items-center gap-3">
@@ -194,7 +211,7 @@ export const OnBoarding = () => {
             <Input
               placeholder={"70 кг"}
               type={"text"}
-              value={String(formData.weight)}
+              value={formData.weight}
               onChange={(e) =>
                 setFormData({ ...formData, weight: e.target.value })
               }
@@ -219,6 +236,11 @@ export const OnBoarding = () => {
             <Button variant="primary" onClick={() => handleChangeStep("Goal")}>
               Продолжить
             </Button>
+            {isError && (
+              <Typography variant={"body"} className="text-danger">
+                Заполните все данные
+              </Typography>
+            )}
           </div>
         </div>
       ) : (
@@ -237,6 +259,7 @@ export const OnBoarding = () => {
                 const IconComponent = item.icon;
                 return (
                   <Card
+                    key={item.target}
                     className={`w-full bg-surface rounded-lg border py-3 px-5 flex items-center ${formData.target === item.target ? "border-primary ring-2 ring-primary/10 transition-all" : "border-border"} gap-4 `}
                     onClick={() =>
                       setFormData((prev) => ({ ...prev, target: item.target }))
@@ -265,6 +288,7 @@ export const OnBoarding = () => {
             <div className="flex flex-col gap-2">
               {activities.map((item) => (
                 <Card
+                  key={item.activity}
                   className={`w-full bg-surface rounded-lg border py-3 px-5 flex justify-between items-center ${formData.activity === item.activity ? "border-primary ring-2 ring-primary/10 transition-all" : "border-border"}`}
                   onClick={() =>
                     setFormData((prev) => ({
@@ -292,6 +316,11 @@ export const OnBoarding = () => {
           <Button variant="primary" onClick={() => handleFinishRegister()}>
             Продолжить
           </Button>
+          {isError && (
+            <Typography variant={"body"} className="text-danger">
+              Заполните все данные
+            </Typography>
+          )}
         </div>
       )}
       <br />

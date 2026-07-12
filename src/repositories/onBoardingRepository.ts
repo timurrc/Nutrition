@@ -4,17 +4,23 @@ export const OnBoardingRepository = {
   create(onBoarding: OnBoarding) {
     return db.onBoarding.add(onBoarding);
   },
-  get(id: number) {
-    const start = new Date();
-    const end = new Date();
-    start.setHours(0, 0, 0, 0);
-    end.setHours(23, 59, 59, 999);
-    return db.onBoarding
-      .where("createdAt")
-      .between(start, end)
-      .filter((onBoarding) => onBoarding.userId === id).toArray;
+
+  findByUserId(userId: number) {
+    return db.onBoarding.where("userId").equals(userId).first();
   },
+
   update(id: number, onBoarding: Partial<OnBoarding>) {
     return db.onBoarding.update(id, onBoarding);
+  },
+
+  async upsert(userId: number, onBoarding: Omit<OnBoarding, "id">) {
+    const existing = await OnBoardingRepository.findByUserId(userId);
+
+    if (existing?.id) {
+      await OnBoardingRepository.update(existing.id, { ...onBoarding, userId });
+      return existing.id;
+    }
+
+    return OnBoardingRepository.create({ ...onBoarding, userId });
   },
 };

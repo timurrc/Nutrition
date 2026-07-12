@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Card } from "./Card";
-import { EllipsisVertical, Plus } from "lucide-react";
+import { EllipsisVertical, Package, Plus } from "lucide-react";
 
 import { MealEntry } from "../../db/db";
 import { Typography } from "./Typography";
@@ -36,13 +36,19 @@ export const MealSection: FC<MealSectionProps> = ({
             key={item.id}
           >
             <div className="flex items-center gap-2">
-              <img
-                src={item.image}
-                width={54}
-                height={54}
-                alt=""
-                className="rounded-lg object-cover"
-              />
+              {item.image ? (
+                <img
+                  src={item.image}
+                  width={54}
+                  height={54}
+                  alt=""
+                  className="rounded-lg object-cover"
+                />
+              ) : (
+                <div className="flex size-[54px] items-center justify-center rounded-lg bg-surface-secondary text-text-secondary">
+                  <Package size={20} />
+                </div>
+              )}
               <div className="flex flex-col">
                 <Typography variant={"body"}>{item.title}</Typography>
                 <Typography variant={"body"} className="text-sm text-text-secondary">

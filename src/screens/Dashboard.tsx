@@ -8,14 +8,18 @@ import {
   PillBottle,
   Plus,
 } from "lucide-react";
-import { ProgressRing } from "../components/features/ProgressRing";
 import { Card } from "../components/ui/Card";
 import { Container } from "../components/ui/Container";
 import { useState } from "react";
+import { useLiveQuery } from "dexie-react-hooks";
 import { WaterRepository } from "../repositories/waterRepository";
+import { MealRepository } from "../repositories/mealRepository";
+import { OnBoardingRepository } from "../repositories/onBoardingRepository";
 import { Typography } from "../components/ui/Typography";
 import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button";
+import { getCurrentUserId } from "../utils/currentUser";
+import { calcProgress, getDailyGoals } from "../utils/nutritionGoals";
 
 interface IWaterVolume {
   id: number;
@@ -50,7 +54,7 @@ const MacroStat = ({
         {label}
       </Typography>
       <Typography variant={"body"} className={`font-semibold ${colorClass}`}>
-        {current}
+        {Math.round(current)}
         <span className="font-normal text-text-secondary">/{goal} г</span>
       </Typography>
     </div>
@@ -66,8 +70,53 @@ const MacroStat = ({
   </div>
 );
 
+const formatLiters = (ml: number) => (ml / 1000).toFixed(1);
+
 export const Dashboard = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [formData, setFormData] = useState<IWater>({
+    addWater: 250,
+    description: "",
+  });
+  const userId = getCurrentUserId();
+  const today = new Date();
+
+  const onboarding = useLiveQuery(
+    () =>
+      userId !== null ? OnBoardingRepository.findByUserId(userId) : undefined,
+    [userId],
+  );
+  const mealTotals = useLiveQuery(
+    () =>
+      userId !== null
+        ? MealRepository.getDailyTotals(userId, today)
+        : undefined,
+    [userId],
+  );
+  const waterMl = useLiveQuery(
+    () =>
+      userId !== null
+        ? WaterRepository.getTotalByDate(userId, today)
+        : undefined,
+    [userId],
+  );
+
+  if (userId === null) {
+    return null;
+  }
+
+  const goals = getDailyGoals(onboarding);
+  const totals = mealTotals ?? {
+    calories: 0,
+    protein: 0,
+    fat: 0,
+    carbs: 0,
+  };
+  const waterTotal = waterMl ?? 0;
+
+  const calorieProgress = calcProgress(totals.calories, goals.calories);
+  const remainingCalories = Math.max(0, goals.calories - totals.calories);
+  const waterProgress = calcProgress(waterTotal, goals.waterMl);
 
   const waterVolume: IWaterVolume[] = [
     { id: 1, icon: Coffee, title: 250 },
@@ -75,32 +124,29 @@ export const Dashboard = () => {
     { id: 3, icon: PillBottle, title: 750 },
     { id: 4, icon: Milk, title: 1000 },
   ];
-  const [formData, setFormData] = useState<IWater>({
-    addWater: 250,
-    description: "",
-  });
+
   const handleSelectVolume = (volume: number) => {
     setFormData({ ...formData, addWater: volume });
   };
   const handleChangeVolume = (difference: string) => {
     if (difference === "increment") {
       setFormData({ ...formData, addWater: formData.addWater + 50 });
-    } else {
-      if (formData.addWater > 0) {
-        setFormData({ ...formData, addWater: formData.addWater - 50 });
-      }
+    } else if (formData.addWater > 0) {
+      setFormData({ ...formData, addWater: formData.addWater - 50 });
     }
   };
   const handleUpdateWater = async () => {
     await WaterRepository.create({
-      userId: 1,
+      userId,
       amount: Number(formData.addWater),
-      description: formData.description,
+      description: formData.description || null,
       createdAt: Date.now(),
     });
+    setFormData({ addWater: 250, description: "" });
+    setIsOpen(false);
   };
 
-  const todayLabel = new Date().toLocaleDateString("ru-RU", {
+  const todayLabel = today.toLocaleDateString("ru-RU", {
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -119,7 +165,7 @@ export const Dashboard = () => {
         </div>
         <div className="rounded-full bg-primary/10 px-3 py-1">
           <Typography variant={"caption"} className="font-medium text-primary">
-            День 12
+            Цель {goals.calories} ккал
           </Typography>
         </div>
       </div>
@@ -127,36 +173,27 @@ export const Dashboard = () => {
       <Card className="relative mb-4 overflow-hidden rounded-2xl border border-border bg-surface p-5 shadow-sm">
         <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary via-primary-hover to-secondary" />
         <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-center">
-          <div className="shrink-0 scale-90 sm:scale-100">
-            <ProgressRing
-              progress={42}
-              color={"calories"}
-              variant={"big"}
-              size={190}
-              strokeWidth={10}
-            />
-          </div>
           <div className="flex min-w-0 flex-1 flex-col gap-3">
             <div>
               <Typography variant={"caption"}>Калории сегодня</Typography>
               <Typography variant={"h1"} className="leading-none">
-                1650
+                {Math.round(totals.calories)}
               </Typography>
               <Typography variant={"body"} className="text-text-secondary">
-                из 1950 ккал
+                из {goals.calories} ккал
               </Typography>
             </div>
             <div>
-              <div className="mb-1 flex justify-between">
+              <div className="mb-1 flex justify-between gap-2">
                 <Typography variant={"caption"}>Прогресс дня</Typography>
                 <Typography variant={"caption"} className="text-primary">
-                  42%
+                  {calorieProgress}%
                 </Typography>
               </div>
               <div className="h-2.5 overflow-hidden rounded-full bg-surface-secondary">
                 <div
                   className="h-full rounded-full bg-primary transition-all"
-                  style={{ width: "42%" }}
+                  style={{ width: `${calorieProgress}%` }}
                 />
               </div>
             </div>
@@ -164,13 +201,13 @@ export const Dashboard = () => {
               <div className="rounded-lg bg-success/10 px-3 py-2">
                 <Typography variant={"caption"}>Осталось</Typography>
                 <Typography variant={"body"} className="font-semibold text-success">
-                  400 ккал
+                  {remainingCalories} ккал
                 </Typography>
               </div>
               <div className="rounded-lg bg-primary/10 px-3 py-2">
                 <Typography variant={"caption"}>Съедено</Typography>
                 <Typography variant={"body"} className="font-semibold text-primary">
-                  1650
+                  {Math.round(totals.calories)}
                 </Typography>
               </div>
             </div>
@@ -185,25 +222,25 @@ export const Dashboard = () => {
       <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
         <MacroStat
           label="Белки"
-          current={120}
-          goal={180}
-          progress={34}
+          current={totals.protein}
+          goal={goals.protein}
+          progress={calcProgress(totals.protein, goals.protein)}
           colorClass="text-protein"
           barClass="bg-protein"
         />
         <MacroStat
           label="Жиры"
-          current={120}
-          goal={180}
-          progress={34}
+          current={totals.fat}
+          goal={goals.fat}
+          progress={calcProgress(totals.fat, goals.fat)}
           colorClass="text-fat"
           barClass="bg-fat"
         />
         <MacroStat
           label="Углеводы"
-          current={120}
-          goal={180}
-          progress={34}
+          current={totals.carbs}
+          goal={goals.carbs}
+          progress={calcProgress(totals.carbs, goals.carbs)}
           colorClass="text-carbs"
           barClass="bg-carbs"
         />
@@ -220,7 +257,7 @@ export const Dashboard = () => {
                 Вода
               </Typography>
               <Typography variant={"body"} className="text-text-secondary">
-                Цель на сегодня 4,5 л
+                Цель на сегодня {formatLiters(goals.waterMl)} л
               </Typography>
             </div>
           </div>
@@ -234,15 +271,15 @@ export const Dashboard = () => {
         </div>
 
         <div className="mb-2 flex items-end justify-between">
-          <Typography variant={"h2"}>3.2 л</Typography>
+          <Typography variant={"h2"}>{formatLiters(waterTotal)} л</Typography>
           <Typography variant={"body"} className="text-text-secondary">
-            71% выполнено
+            {waterProgress}% выполнено
           </Typography>
         </div>
         <div className="h-3 overflow-hidden rounded-full bg-surface-secondary">
           <div
             className="h-full rounded-full bg-gradient-to-r from-water to-primary transition-all"
-            style={{ width: "71%" }}
+            style={{ width: `${waterProgress}%` }}
           />
         </div>
       </Card>
@@ -265,7 +302,6 @@ export const Dashboard = () => {
 
               <div className="flex flex-col gap-4">
                 <Typography variant={"body"}>Количество</Typography>
-
                 <div className="flex w-full items-center justify-between">
                   <div
                     className="cursor-pointer rounded-full bg-surface-secondary p-3 transition-colors hover:bg-border"
@@ -273,8 +309,7 @@ export const Dashboard = () => {
                   >
                     <Minus />
                   </div>
-                  <Typography variant={"h1"}> {formData.addWater} мл</Typography>
-
+                  <Typography variant={"h1"}>{formData.addWater} мл</Typography>
                   <div
                     className="cursor-pointer rounded-full bg-surface-secondary p-3 transition-colors hover:bg-border"
                     onClick={() => handleChangeVolume("increment")}
@@ -283,9 +318,9 @@ export const Dashboard = () => {
                   </div>
                 </div>
               </div>
+
               <div className="flex flex-col gap-4">
                 <Typography variant={"body"}>Быстрый выбор</Typography>
-
                 <div className="grid w-full grid-cols-2 gap-2">
                   {waterVolume.map((item) => {
                     const IconComponent = item.icon;
@@ -305,6 +340,7 @@ export const Dashboard = () => {
                   })}
                 </div>
               </div>
+
               <div className="flex flex-col gap-4">
                 <Typography variant={"body"}>Заметка (необязательно)</Typography>
                 <Input
@@ -316,13 +352,16 @@ export const Dashboard = () => {
                   placeholder="Например: после тренировки"
                 />
               </div>
+
               <Button variant="secondary" onClick={() => handleUpdateWater()}>
                 Добавить {formData.addWater} мл воды
               </Button>
 
               <div className="flex items-center justify-center gap-2 text-text-secondary">
                 <Droplet />
-                <Typography variant={"body"}>Цель на сегодня 2 500мл</Typography>
+                <Typography variant={"body"}>
+                  Цель на сегодня {goals.waterMl} мл
+                </Typography>
               </div>
             </div>
           </div>
