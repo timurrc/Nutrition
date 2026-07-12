@@ -74,7 +74,7 @@ export const Auth = () => {
           <div className="flex size-16 items-center justify-center rounded-2xl border border-border bg-surface shadow-sm">
             <img src={logo} className="w-10" alt="" />
           </div>
-          <Typography variant={"h2"}>BodyForge</Typography>
+          <Typography variant={"h2"}>Nutrition</Typography>
           <Typography variant={"body"} className="max-w-xs text-text-secondary">
             {signUp
               ? "Создайте аккаунт и начните вести дневник питания"

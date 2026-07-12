@@ -1,54 +1,78 @@
-# React + TypeScript + Vite
+# Nutrition
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Pet-проект — дневник питания и воды. Без подписок и без бэкенда: всё живёт в браузере.
 
-Currently, two official plugins are available:
+<!-- **Demo:** https://your-app.vercel.app -->
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Что умеет
 
-## Expanding the ESLint configuration
+- регистрация / вход, protected routes (нет сессии → auth, нет профиля → onboarding)
+- onboarding: пол, рост, вес, цель, активность → расчёт дневных норм (Mifflin–St Jeor) и сохранение в БД
+- dashboard: калории, БЖУ, вода, progress bars
+- дневник по приёмам пищи (завтрак / обед / ужин / перекус)
+- добавление еды из каталога или своего продукта (БЖУ на 100 г, хранится в IndexedDB)
+- граммовка с пересчётом калорий и макросов на лету
+- учёт воды с быстрым выбором объёма
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Стек
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+React 19 · TypeScript · Vite · React Router 7 · Dexie 4 · Tailwind CSS 4 · Lucide
+
+## Как устроено
+
+```
+screens/          — страницы (Auth, OnBoarding, Dashboard, Meal, Log)
+components/
+  routing/        — GuestRoute, OnBoardingRoute, ProtectedRoute
+  features/meal/  — GramStepper, MacroGrid
+repositories/     — тонкий слой над Dexie (users, meals, water, onboarding, customProducts)
+utils/            — currentUser, nutritionGoals, scaleNutrition, dateRange
+db/db.ts          — схема и миграции Dexie (v2: цели в профиле + customProducts)
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**Сессия:** `userId` в `localStorage`, без fallback на дефолтного пользователя.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+**Нормы:** при создании профиля считаются один раз и пишутся в `OnBoarding`. Dashboard читает сохранённые значения; для старых записей без полей — fallback на пересчёт.
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+**Еда:** каталог (`consts/dishes.ts`) + пользовательские продукты. При добавлении в дневник в `meals` попадают уже масштабированные значения под выбранную граммовку.
+
+```mermaid
+flowchart LR
+  A[Guest] -->|/auth| B[Auth]
+  B -->|register| C[OnBoarding]
+  B -->|login| C
+  B -->|login + profile| D[App]
+  C -->|save goals| D
+  D --> E[Dashboard]
+  D --> F[Meal]
+  D --> G[Log]
 ```
+
+## Запуск
+
+```bash
+bun install   # или npm install
+bun dev       # http://localhost:5173
+```
+
+Сборка и линт:
+
+```bash
+bun run build
+bun run lint
+```
+
+## Ограничения (осознанно для pet)
+
+- пароли в IndexedDB как plain text — не production auth
+- нет синка между устройствами: данные только в этом браузере
+- нет серверной валидации и восстановления пароля
+
+## Ветки
+
+- `main` — стабильная
+- `development` — текущая разработка (UI + БД)
+
+## Автор
+
+Timur Abutalipov — pet-проект для портфолио.
