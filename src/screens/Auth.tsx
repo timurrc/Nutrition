@@ -8,6 +8,7 @@ import { UserRepository } from "../repositories/userRepository";
 import { Input } from "../components/ui/Input";
 import { Typography } from "../components/ui/Typography";
 import { Button } from "../components/ui/Button";
+import { Card } from "../components/ui/Card";
 
 interface IAuth {
   email: string;
@@ -65,111 +66,124 @@ export const Auth = () => {
   };
   return (
     <Container>
-      <div className="flex flex-col justify-center items-center gap-8 mt-20">
-        <img src={logo} className="w-36" alt="" />
-        <div className="flex flex-col gap-2 text-center">
-          <Typography variant={"h2"}>Добро пожаловать!</Typography>
-
-          <Typography variant={"body"} className="text-text-secondary">
-            {signUp ? "Создайте" : "Войдите в "} аккаунт, чтобы
-            {signUp ? " начать" : "продолжить"} свой путь к цели
+      <div className="mx-auto flex min-h-[80vh] max-w-md flex-col justify-center gap-6 py-10">
+        <div className="flex flex-col items-center gap-3 text-center">
+          <div className="flex size-16 items-center justify-center rounded-2xl border border-border bg-surface shadow-sm">
+            <img src={logo} className="w-10" alt="" />
+          </div>
+          <Typography variant={"h2"}>BodyForge</Typography>
+          <Typography variant={"body"} className="max-w-xs text-text-secondary">
+            {signUp
+              ? "Создайте аккаунт и начните вести дневник питания"
+              : "Войдите, чтобы продолжить свой путь к цели"}
           </Typography>
         </div>
-        <div className="flex flex-col gap-2 w-full">
-          <Input
-            placeholder={"Email"}
-            type={"email"}
-            value={formData.email}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
-            icon={Mail}
-            iconSide="left"
-          />
-          <Input
-            placeholder={"Password"}
-            type={"password"}
-            value={formData.password}
-            onChange={(e) =>
-              setFormData({ ...formData, password: e.target.value })
-            }
-            icon={Lock}
-            iconSide="left"
-          />
 
-          {signUp && (
-            <>
-              <Input
-                placeholder={"Confirm password"}
-                type={"password"}
-                value={formData.confirmPassword ?? ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, confirmPassword: e.target.value })
-                }
-                icon={Lock}
-                iconSide="left"
-              />
-              <Input
-                type={"date"}
-                value={formData.date ?? ""}
-                onChange={(e) =>
-                  setFormData({ ...formData, date: e.target.value })
-                }
-                icon={Calendar}
-                iconSide="left"
-              />
-            </>
-          )}
-          {!signUp && (
-            <Typography variant={"body"} className="flex justify-end text-primary">
-              Забыли пароль?
-            </Typography>
-          )}
-        </div>
-        <div className="flex flex-col gap-3 w-full items-center">
-          <Button
-            variant="primary"
-            onClick={() => {
-              if (signUp) {
-                handleRegister();
-              } else {
-                handleAuth();
+        <Card className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
+          <div className="mb-5 grid grid-cols-2 gap-1 rounded-lg bg-surface-secondary p-1">
+            <button
+              type="button"
+              className={`h-10 rounded-md text-sm font-medium transition-all ${!signUp ? "bg-surface text-text shadow-sm" : "text-text-secondary"}`}
+              onClick={() => setSignUp(false)}
+            >
+              Вход
+            </button>
+            <button
+              type="button"
+              className={`h-10 rounded-md text-sm font-medium transition-all ${signUp ? "bg-surface text-text shadow-sm" : "text-text-secondary"}`}
+              onClick={() => setSignUp(true)}
+            >
+              Регистрация
+            </button>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <Input
+              placeholder={"Email"}
+              type={"email"}
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
               }
-            }}
-          >
-            {signUp ? "Зарегистрироваться" : "Войти"}
-          </Button>
+              icon={Mail}
+              iconSide="left"
+            />
+            <Input
+              placeholder={"Пароль"}
+              type={"password"}
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+              icon={Lock}
+              iconSide="left"
+            />
 
-          {signUp ? (
-            <Typography
-              variant={"body"}
-              className="flex gap-1 items-center text-text-secondary"
-            >
-              Уже есть аккаунт?{" "}
+            {signUp && (
+              <>
+                <Input
+                  placeholder={"Подтвердите пароль"}
+                  type={"password"}
+                  value={formData.confirmPassword ?? ""}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      confirmPassword: e.target.value,
+                    })
+                  }
+                  icon={Lock}
+                  iconSide="left"
+                />
+                <Input
+                  type={"date"}
+                  value={formData.date ?? ""}
+                  onChange={(e) =>
+                    setFormData({ ...formData, date: e.target.value })
+                  }
+                  icon={Calendar}
+                  iconSide="left"
+                />
+              </>
+            )}
+            {!signUp && (
               <Typography
                 variant={"body"}
-                className="cursor-pointer text-primary"
-                onClick={() => setSignUp(!signUp)}
+                className="flex justify-end text-sm text-primary"
               >
-                Войти
+                Забыли пароль?
               </Typography>
-            </Typography>
-          ) : (
+            )}
+          </div>
+
+          <div className="mt-5 flex flex-col gap-3">
+            <Button
+              variant="primary"
+              onClick={() => {
+                if (signUp) {
+                  handleRegister();
+                } else {
+                  handleAuth();
+                }
+              }}
+            >
+              {signUp ? "Зарегистрироваться" : "Войти"}
+            </Button>
+
             <Typography
               variant={"body"}
-              className="flex gap-1 items-center text-text-secondary"
+              className="text-center text-sm text-text-secondary"
             >
-              Нет аккаунта?
+              {signUp ? "Уже есть аккаунт?" : "Нет аккаунта?"}{" "}
               <Typography
                 variant={"body"}
-                className="cursor-pointer text-primary"
+                className="inline cursor-pointer text-sm font-medium text-primary"
                 onClick={() => setSignUp(!signUp)}
               >
-                Зарегистрируйтесь
+                {signUp ? "Войти" : "Зарегистрироваться"}
               </Typography>
             </Typography>
-          )}
-        </div>
+          </div>
+        </Card>
       </div>
     </Container>
   );

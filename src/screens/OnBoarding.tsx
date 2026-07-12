@@ -141,8 +141,16 @@ export const OnBoarding = () => {
   };
   return (
     <Container>
+      <div className="mx-auto mb-8 mt-6 flex max-w-md items-center gap-3">
+        <div
+          className={`h-1.5 flex-1 rounded-full ${step === "Personal" ? "bg-primary" : "bg-primary/30"}`}
+        />
+        <div
+          className={`h-1.5 flex-1 rounded-full ${step === "Goal" ? "bg-primary" : "bg-surface-secondary"}`}
+        />
+      </div>
       {step === "Personal" ? (
-        <div className="flex flex-col justify-center items-center gap-8 mt-20 ">
+        <div className="flex flex-col justify-center items-center gap-8">
           <div className="flex flex-col gap-3 text-center">
             <Typography variant={"h2"}>Расскажите о себе</Typography>
             <Typography variant={"body"} className="text-text-secondary">
@@ -214,7 +222,7 @@ export const OnBoarding = () => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col justify-center items-center gap-8 mt-20 ">
+        <div className="flex flex-col justify-center items-center gap-8">
           <div className="flex flex-col gap-3 text-center">
             <Typography variant={"h2"}>Ваша цель</Typography>
             <Typography variant={"body"} className="text-text-secondary">
