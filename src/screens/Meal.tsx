@@ -13,7 +13,7 @@ import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
 import { getCurrentUserId } from "../utils/currentUser";
 import { scaleNutrition } from "../utils/scaleNutrition";
-import { GramStepper } from "../components/features/meal/GramStepper";
+import { GramSlider } from "../components/features/meal/GramSlider";
 import { MacroGrid } from "../components/features/meal/MacroGrid";
 
 type FoodSource = "catalog" | "custom";
@@ -341,7 +341,7 @@ export const Meal = () => {
             </div>
           </div>
 
-          <GramStepper grams={grams} onChange={setGrams} />
+          <GramSlider grams={grams} onChange={setGrams} />
 
           <MacroGrid
             protein={scaled.protein}

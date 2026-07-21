@@ -19,6 +19,7 @@ import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button";
 import { getCurrentUserId } from "../utils/currentUser";
 import { calculateDailyGoals } from "../utils/nutritionGoals";
+import { WeightRepository } from "../repositories/weightRepository";
 
 type OnBoardingForm = {
   sex: Sex | null;
@@ -152,6 +153,15 @@ export const OnBoarding = () => {
       dailyCarbs: goals.carbs,
       dailyWaterMl: goals.waterMl,
     });
+
+    const existingWeights = await WeightRepository.getByUserId(userId);
+    if (existingWeights.length === 0) {
+      await WeightRepository.create({
+        userId,
+        weight: profile.weight,
+        createdAt: Date.now(),
+      });
+    }
 
     navigate("/");
   };

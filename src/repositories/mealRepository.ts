@@ -39,4 +39,38 @@ export const MealRepository = {
       return acc;
     }, emptyTotals());
   },
+
+  getInRange(userId: number, from: Date, to: Date) {
+    const start = new Date(from);
+    const end = new Date(to);
+    start.setHours(0, 0, 0, 0);
+    end.setHours(23, 59, 59, 999);
+
+    return db.meals
+      .where("createdAt")
+      .between(start.getTime(), end.getTime())
+      .filter((meal) => meal.userId === userId)
+      .toArray();
+  },
+
+  async getDailyTotalsMap(
+    userId: number,
+    from: Date,
+    to: Date,
+  ): Promise<Map<string, MealTotals>> {
+    const meals = await MealRepository.getInRange(userId, from, to);
+    const map = new Map<string, MealTotals>();
+
+    for (const meal of meals) {
+      const key = new Date(meal.createdAt).toDateString();
+      const current = map.get(key) ?? emptyTotals();
+      current.calories += meal.calories;
+      current.protein += meal.protein;
+      current.fat += meal.fat;
+      current.carbs += meal.carbs;
+      map.set(key, current);
+    }
+
+    return map;
+  },
 };

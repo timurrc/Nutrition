@@ -172,7 +172,7 @@ export const Dashboard = () => {
 
       <Card className="relative mb-4 overflow-hidden rounded-2xl border border-border bg-surface p-5 shadow-sm">
         <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary via-primary-hover to-secondary" />
-        <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-center">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
           <div className="flex min-w-0 flex-1 flex-col gap-3">
             <div>
               <Typography variant={"caption"}>Калории сегодня</Typography>
@@ -200,13 +200,19 @@ export const Dashboard = () => {
             <div className="flex gap-2">
               <div className="rounded-lg bg-success/10 px-3 py-2">
                 <Typography variant={"caption"}>Осталось</Typography>
-                <Typography variant={"body"} className="font-semibold text-success">
+                <Typography
+                  variant={"body"}
+                  className="font-semibold text-success"
+                >
                   {remainingCalories} ккал
                 </Typography>
               </div>
               <div className="rounded-lg bg-primary/10 px-3 py-2">
                 <Typography variant={"caption"}>Съедено</Typography>
-                <Typography variant={"body"} className="font-semibold text-primary">
+                <Typography
+                  variant={"body"}
+                  className="font-semibold text-primary"
+                >
                   {Math.round(totals.calories)}
                 </Typography>
               </div>
@@ -342,7 +348,9 @@ export const Dashboard = () => {
               </div>
 
               <div className="flex flex-col gap-4">
-                <Typography variant={"body"}>Заметка (необязательно)</Typography>
+                <Typography variant={"body"}>
+                  Заметка (необязательно)
+                </Typography>
                 <Input
                   type={"text"}
                   value={formData.description}

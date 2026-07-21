@@ -34,6 +34,13 @@ export interface CustomProduct {
   createdAt: number;
 }
 
+export interface WeightEntry {
+  id?: number;
+  userId: number;
+  weight: number;
+  createdAt: number;
+}
+
 export interface WaterEntry {
   id?: number;
   userId: number;
@@ -64,6 +71,7 @@ export class AppDatabase extends Dexie {
   waterEntry!: Table<WaterEntry>;
   meals!: Table<MealEntry>;
   customProducts!: Table<CustomProduct>;
+  weightEntries!: Table<WeightEntry>;
 
   constructor() {
     super("nutrition-db");
@@ -81,6 +89,15 @@ export class AppDatabase extends Dexie {
       waterEntry: "++id, userId, createdAt",
       meals: "++id, userId,createdAt",
       customProducts: "++id, userId, createdAt",
+    });
+
+    this.version(3).stores({
+      users: "++id, email",
+      onBoarding: "++id, userId",
+      waterEntry: "++id, userId, createdAt",
+      meals: "++id, userId,createdAt",
+      customProducts: "++id, userId, createdAt",
+      weightEntries: "++id, userId, createdAt",
     });
   }
 }

@@ -1,4 +1,4 @@
-import { BookMarked, CirclePlus, Home, type LucideIcon } from "lucide-react";
+import { BookMarked, ChartColumn, CirclePlus, Home, UserRound, type LucideIcon } from "lucide-react";
 
 export interface iNavLinks {
   id: number;
@@ -14,7 +14,6 @@ export const navLinks: iNavLinks[] = [
     title: "Главная",
     link: "/",
   },
-
   {
     id: 2,
     icon: CirclePlus,
@@ -26,5 +25,17 @@ export const navLinks: iNavLinks[] = [
     icon: BookMarked,
     title: "Дневник",
     link: "/log",
+  },
+  {
+    id: 4,
+    icon: ChartColumn,
+    title: "Стат",
+    link: "/stats",
+  },
+  {
+    id: 5,
+    icon: UserRound,
+    title: "Профиль",
+    link: "/profile",
   },
 ];

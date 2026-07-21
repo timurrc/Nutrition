@@ -7,6 +7,8 @@ import { Log } from "./screens/Log";
 import { Meal } from "./screens/Meal";
 import { Auth } from "./screens/Auth";
 import { OnBoarding } from "./screens/OnBoarding";
+import { Stats } from "./screens/Stats";
+import { Profile } from "./screens/Profile";
 import { ProtectedRoute } from "./components/routing/ProtectedRoute";
 import { GuestRoute } from "./components/routing/GuestRoute";
 import { OnBoardingRoute } from "./components/routing/OnBoardingRoute";
@@ -25,6 +27,8 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/" element={<Dashboard />} />
           <Route path="/meal" element={<Meal />} />
           <Route path="/log" element={<Log />} />
+          <Route path="/stats" element={<Stats />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Route>
     </Routes>
